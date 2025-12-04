@@ -1,0 +1,204 @@
+/* hero.css — CTA with soft glass panel behind content
+   (no glass / sheen on the words themselves) */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&display=swap");
+
+/* ===== Section ===== */
+.cta-section {
+  --ink: var(--body-ink);
+  --muted: var(--body-muted);
+
+  --gradA: #56ccf2;
+  --gradB: #2f80ed;
+
+  /* soft glass panel tokens (lighter, less dark) */
+  --panel-bg: rgba(10, 16, 30, 0.3); /* more transparent */
+  --panel-border: rgba(255, 255, 255, 0.1);
+  --panel-radius: 20px;
+  --panel-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+
+  position: relative;
+  min-height: 86vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--ink);
+  text-align: center;
+}
+
+/* Background */
+.cta-bg {
+  position: absolute;
+  inset: -14vh -10vw;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+  filter: brightness(1) contrast(1.05) saturate(1.05);
+  z-index: 0;
+}
+
+/* Slightly lighter overlay so scene stays bright */
+.cta-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.18),
+    rgba(0, 0, 0, 0.42)
+  );
+  z-index: 1;
+}
+
+/* Content wrapper */
+.cta-content {
+  position: relative;
+  z-index: 5;
+  padding: 32px 20px;
+  max-width: min(880px, 94vw);
+}
+
+/* ===== Glass panel behind text + buttons ===== */
+.cta-panel {
+  margin: 0 auto;
+  max-width: 760px;
+  padding: clamp(22px, 4vw, 34px) clamp(18px, 4vw, 30px);
+
+  background:
+    radial-gradient(
+      900px 600px at 0% 0%,
+      rgba(255, 255, 255, 0.04),
+      transparent 55%
+    ),
+    radial-gradient(
+      900px 600px at 100% 100%,
+      rgba(255, 255, 255, 0.03),
+      transparent 55%
+    ),
+    var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--panel-radius);
+
+  backdrop-filter: blur(6px) saturate(135%);
+  -webkit-backdrop-filter: blur(8px) saturate(135%);
+
+  box-shadow: var(--panel-shadow);
+}
+
+/* ===== Title ===== */
+.cta-title {
+  margin: 0 0 0.9rem;
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.65s ease,
+    transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* spans only for line break, no extra effects */
+.cta-title span {
+  display: inline-block;
+}
+
+.cta-title.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Subtitle ===== */
+.cta-sub {
+  margin: 0.4rem 0 1.9rem;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s 0.03s ease,
+    transform 0.7s 0.03s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.cta-sub.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Buttons ===== */
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  /* on wide screens: side-by-side */
+  flex-wrap: nowrap;
+}
+
+.cta-btn {
+  padding: 0.9rem 1.8rem;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* both buttons have similar width on desktop */
+.cta-btn.primary,
+.cta-btn.secondary {
+  min-width: 180px;
+}
+
+.cta-btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cta-btn.primary {
+  background: linear-gradient(90deg, var(--gradA), var(--gradB));
+  color: #061018;
+}
+
+.cta-btn.primary:hover {
+  filter: brightness(1.05);
+}
+
+.cta-btn.secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.cta-btn.secondary:hover {
+  filter: brightness(1.03);
+}
+
+/* ===== Responsive buttons (mobile) ===== */
+@media (max-width: 640px) {
+  .cta-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .cta-btn {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .cta-title,
+  .cta-sub,
+  .cta-btn {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

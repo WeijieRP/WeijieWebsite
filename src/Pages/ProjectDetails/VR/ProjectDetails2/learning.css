@@ -1,0 +1,239 @@
+/* learning.css — uses global aurora h2 + warm peach body text */
+
+:root {
+  /* local accents only if needed */
+  --rl-accent: #f6a96c;
+  --rl-accent-2: #ffb574;
+  --rl-stroke: rgba(255, 255, 255, 0.14);
+}
+
+/* ===== SECTION ===== */
+.rl-stage {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(56px, 8vw, 120px) clamp(20px, 6vw, 80px);
+  overflow: hidden;
+
+  background: var(--body-bg, #050816);
+  color: var(--body-ink, #fbd2a0);
+}
+
+/* BACKGROUND — crisp, no blur */
+.rl-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.85) contrast(1.06) saturate(1.08);
+  z-index: 0;
+}
+
+/* subtle overlay for readability */
+.rl-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      70% 60% at 50% 26%,
+      rgba(0, 0, 0, 0.04) 0%,
+      rgba(0, 0, 0, 0.22) 60%,
+      rgba(0, 0, 0, 0.36) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.08) 0%,
+      rgba(0, 0, 0, 0.3) 55%,
+      rgba(0, 0, 0, 0.44) 100%
+    );
+}
+
+/* ===== HEAD ===== */
+.rl-head {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: clamp(20px, 3vw, 40px);
+  display: flex;
+  justify-content: center;
+}
+
+/* 🔶 Glass panel wrapping eyebrow + title */
+.rl-headGlass {
+  display: inline-block;
+  max-width: 720px;
+  width: min(92vw, 720px);
+  padding: clamp(14px, 2.4vw, 20px) clamp(18px, 3vw, 26px);
+  background: rgba(5, 8, 22, 0.95);
+  border-radius: 18px;
+  border: 1px solid var(--rl-stroke);
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+}
+
+/* keep header text crisp inside the glass */
+.rl-headGlass,
+.rl-headGlass * {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+/* Eyebrow */
+.rl-eyebrow {
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0.9;
+  font-size: clamp(10px, 1vw, 13px);
+  color: var(--body-muted, #f6c28f);
+  margin: 0 0 4px;
+}
+
+/* h2 uses global gradient + weight; only layout here */
+.rl-title {
+  margin: 6px 0 0;
+  font-weight: 900;
+  line-height: 1.05;
+  font-size: clamp(26px, 4vw, 42px);
+}
+
+/* ===== METRICS ===== */
+.rl-metrics {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 22px;
+}
+
+@media (max-width: 800px) {
+  .rl-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.rl-metric {
+  background: rgba(5, 8, 22, 0.94);
+  border: 1px solid var(--rl-stroke);
+  border-radius: 16px;
+  padding: 14px;
+  text-align: center;
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+}
+
+.rl-metric-value {
+  display: block;
+  font-weight: 900;
+  font-size: 1.25rem;
+  color: var(--body-ink, #fbd2a0);
+}
+
+.rl-metric-label {
+  display: block;
+  color: var(--body-muted, #f6c28f);
+  font-size: 0.78rem;
+  margin-top: 4px;
+}
+
+/* ===== GRID ===== */
+.rl-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .rl-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rl-card {
+  background: rgba(5, 8, 22, 0.94);
+  border: 1px solid var(--rl-stroke);
+  border-radius: 16px;
+  padding: clamp(18px, 2.8vw, 24px);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.rl-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 22px 52px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+}
+
+.rl-card-title {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--body-ink, #fbd2a0);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.rl-copy {
+  margin: 0;
+  color: var(--body-muted, #f6c28f);
+  font-size: 0.94rem;
+  line-height: 1.75;
+}
+
+/* === DIRECTION-AWARE SLIDE ENGINE (CSS variables) === */
+.reveal {
+  opacity: 0;
+  transform:
+    translateX(var(--from-x, 0))
+    translateY(var(--from-y, 22px))
+    scale(var(--from-scale, 0.96));
+  transition:
+    opacity 0.65s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.65s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform, opacity;
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform:
+    translateX(var(--to-x, 0))
+    translateY(var(--to-y, 0))
+    scale(var(--to-scale, 1));
+}
+
+.reveal.is-out {
+  opacity: 0;
+  transform:
+    translateX(var(--to-x, 0))
+    translateY(var(--to-y, 18px))
+    scale(var(--to-scale, 0.96));
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.is-in,
+  .reveal.is-out {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

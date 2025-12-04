@@ -1,0 +1,283 @@
+/* ===== FULL-SECTION with IMAGE BACKGROUND ===== */
+.tf-stage {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: clamp(56px, 7vw, 90px) 0;
+  color: var(--body-ink); /* use global warm peach */
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Keep foreground crisp (no unintended blur/filters) */
+.tf-stage .tf-container,
+.tf-stage .tf-container * {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Background only (overlay removed) */
+.tf-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  /* gentle tuning so stars pop but stay clean */
+  filter: brightness(0.6) contrast(1.06) saturate(1.08);
+  transform: scale(1.06);
+  z-index: 0;
+}
+
+/* ===== CONTENT CONTAINER ===== */
+.tf-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 6vw, 64px);
+  text-align: center;
+}
+
+/* ===== GLASS PANEL for title + subtitle (no blur; sharp text) ===== */
+.tf-glass-head {
+  display: block;
+  margin: 0 auto 22px;
+  padding: clamp(14px, 2.2vw, 22px) clamp(18px, 3vw, 28px);
+  width: min(920px, 100%);
+  border-radius: 18px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.06)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  text-align: center;
+}
+
+/* Title – uses GLOBAL h2 gradient + weight, only layout here */
+.tf-glass-head h2 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.06;
+}
+
+/* Subtitle — crisp, readable (uses global muted peach) */
+.tf-sub {
+  margin: 6px auto 0;
+  max-width: 780px;
+  font-weight: 600;
+  color: var(--body-muted);
+}
+
+/* ===== VIEWPORT/SLIDES ===== */
+.tf-viewport {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(7, 11, 20, 0.9);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.45);
+}
+
+.tf-track {
+  display: flex;
+  transition: transform 0.75s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+/* Slide card */
+.tf-card {
+  min-width: 100%;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 14px;
+  padding: clamp(18px, 3.6vw, 28px);
+  text-align: left;
+}
+
+/* header inside card */
+.tf-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* pill for week label */
+.tf-week {
+  --accent: #67d3ff;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--accent);
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(103, 211, 255, 0.12);
+  border: 1px solid rgba(103, 211, 255, 0.28);
+}
+
+.tf-card-title {
+  font-size: clamp(1.1rem, 2.3vw, 1.35rem);
+  font-weight: 900;
+  margin: 0;
+  color: var(--body-ink);
+}
+
+/* badges row */
+.tf-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tf-badge {
+  font-weight: 800;
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--body-ink);
+  white-space: nowrap;
+}
+
+/* checklist */
+.tf-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tf-list li {
+  position: relative;
+  margin: 0.48rem 0;
+  padding-left: 22px;
+  color: var(--body-muted);
+  font-weight: 600;
+}
+
+.tf-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff, #7ec3ff);
+  box-shadow: 0 0 12px rgba(103, 211, 255, 0.45);
+}
+
+/* controls */
+.tf-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.tf-btn {
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 900;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--body-ink);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tf-btn:hover {
+  background: rgba(103, 211, 255, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px rgba(103, 211, 255, 0.2);
+}
+
+/* dots */
+.tf-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tf-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tf-dot.is-active {
+  background: #67d3ff;
+  box-shadow: 0 0 16px rgba(103, 211, 255, 0.5);
+  transform: scale(1.08);
+}
+
+/* ===== Direction-aware SCROLL REVEAL (slide only) ===== */
+[data-reveal] {
+  transform: translateX(var(--enter-x, 0));
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: var(--delay, 0ms);
+  will-change: transform;
+}
+
+.is-in[data-reveal] {
+  transform: translateX(0);
+}
+
+.is-out[data-reveal] {
+  transform: translateX(var(--exit-x, -64px));
+}
+
+[data-reveal][data-side="left"] {
+  --enter-x: -64px;
+  --exit-x: 64px;
+}
+[data-reveal][data-side="right"] {
+  --enter-x: 64px;
+  --exit-x: -64px;
+}
+[data-reveal][data-side="center"] {
+  --enter-x: 48px;
+  --exit-x: -48px;
+}
+
+/* responsive */
+@media (max-width: 560px) {
+  .tf-viewport {
+    border-radius: 14px;
+  }
+}
+
+/* motion safety */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    transform: none !important;
+    transition: none !important;
+  }
+}

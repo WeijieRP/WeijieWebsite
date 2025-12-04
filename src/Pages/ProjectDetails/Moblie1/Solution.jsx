@@ -1,0 +1,76 @@
+// BrandMeSolution.jsx
+import React, { useEffect, useRef } from "react";
+import "./solution.css";
+
+export default function BrandMeSolution({
+  id = "brandme-solution",
+  sectionBg = "/assets/PortfolioMobileProjectDetails1BackgroundImage/matteo-kutufa-Cbe8jHqoPkA-unsplash.jpg",
+  visual = "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1800&auto=format&fit=crop",
+}) {
+  const sectionRef = useRef(null);
+
+  // Reveal on scroll
+  useEffect(() => {
+    const root = sectionRef.current;
+    if (!root) return;
+    const targets = root.querySelectorAll("[data-ani]");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.classList.add("in-view");
+          else e.target.classList.remove("in-view");
+        });
+      },
+      { threshold: 0.18 }
+    );
+    targets.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  // ❌ removed parallax – keep image fixed so layout stays centred
+
+  return (
+    <section
+      id={id}
+      ref={sectionRef}
+      className="bms-stage"
+      style={{ backgroundImage: `url(${sectionBg})` }}
+      aria-label="GPA Calculator solution"
+    >
+      <div className="bms-overlay" aria-hidden="true" />
+
+      <div className="bms-inner">
+        {/* LEFT: TEXT CARD */}
+        <div className="bms-col-left" data-ani>
+          <div className="bms-card">
+            <p className="bms-kicker">GPA CALCULATOR APP</p>
+            <h2 className="">Solution &amp; Approach</h2>
+
+            <p className="">
+              I built a small, fast mobile app with Flutter and Dart. The flow is
+              simple: add a module, enter the credits and grade, and the GPA updates
+              instantly. Data is saved on the device so it works offline. The screens
+              use clear labels, big touch targets, and checks to prevent mistakes.
+              You can group modules by semester, see current and overall GPA, and
+              reset or export your data when needed. The goal is a clean tool that
+              does one job well—help students track results without stress.
+            </p>
+          </div>
+        </div>
+
+        {/* RIGHT: IMAGE */}
+        <figure className="bms-col-right" data-ani>
+          <div
+            className="bms-img"
+            style={{ backgroundImage: `url(${visual})` }}
+            role="img"
+            aria-label="App mockups showing module entry and instant GPA result"
+          />
+          <figcaption className="bms-cap">
+            Screens: add module → enter credits &amp; grade → instant GPA.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+}

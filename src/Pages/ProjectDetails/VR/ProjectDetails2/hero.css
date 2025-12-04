@@ -1,0 +1,145 @@
+:root {
+  --ink: #e6edf3;
+  --muted: #cfd9ec;
+
+  /* aurora gradient from your global CSS */
+  --titleA: #71c4ff;
+  --titleB: #8f8cff;
+  --titleC: #c58ae8;
+  --titleD: #ff7ab5;
+
+  --glass-bg: rgba(5, 8, 22, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.14);
+}
+
+html, body {
+  margin: 0;
+  background: #000;
+  color: var(--ink);
+}
+
+.bm-hero {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.bm-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(var(--bg-scale, 1)) translateY(var(--bg-ty, 0));
+  transition: transform .25s ease-out;
+}
+
+.bm-hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: clamp(40px, 6vw, 96px);
+}
+
+.bm-head {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* 🔶 DARK GLASS PANEL (WRAPS EVERYTHING) */
+.bm-glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  padding: clamp(22px, 3vw, 34px) clamp(22px, 3vw, 38px);
+  box-shadow:
+    0 22px 52px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  max-width: 900px;
+  margin: 0 auto;
+
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Eyebrow */
+.bm-eyebrow {
+  margin: 0 0 8px;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  font-size: clamp(11px, 1.2vw, 13px);
+  color: var(--muted);
+}
+
+/* Title Gradient */
+.bm-title {
+  margin: 0;
+  padding-bottom: 6px; /* FIX clipping */
+  line-height: 1.12;
+  font-size: clamp(32px, 8vw, 88px);
+  font-weight: 900;
+
+  background: linear-gradient(
+    90deg,
+    var(--titleA),
+    var(--titleB),
+    var(--titleC),
+    var(--titleD)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtitle */
+.bm-sub {
+  margin: 14px auto 0;
+  font-size: clamp(14px, 2vw, 18px);
+  max-width: 800px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* CTA inside glass */
+.bm-ctas {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.bm-btn {
+  padding: 12px 26px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 15px;
+
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: var(--ink);
+
+  box-shadow: 0 6px 18px rgba(0,0,0,.4);
+  text-decoration: none;
+  transition: .2s ease;
+}
+
+.bm-btn:hover {
+  background: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+}
+
+/* Reveal animation */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.is-shown {
+  animation: bm-in .6s cubic-bezier(.22,.61,.36,1) forwards;
+}
+
+@keyframes bm-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}

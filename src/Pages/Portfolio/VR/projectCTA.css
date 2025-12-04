@@ -1,0 +1,161 @@
+/* projectCTA.css — VR hero
+   Uses ONLY your global tokens from styles.css:
+   - var(--body-bg), var(--body-ink), var(--body-muted)
+   - .title-aurora for the gradient heading
+*/
+
+/* ===== Section ===== */
+.vr-hero {
+  position: relative;
+  min-height: 100vh;
+  padding: clamp(32px, 6vw, 72px) 20px;
+  display: grid;
+  place-items: center;
+
+  /* Background image + a LITTLE darkening, but NO blur */
+  background-color: var(--body-bg);
+  background-size: cover;
+  background-position: center 40%;
+  background-repeat: no-repeat;
+  color: var(--body-ink);
+  isolation: isolate;
+}
+
+/* subtle vignette to help readability (still no blur) */
+.vr-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.55)
+  );
+  opacity: 0.55;
+  z-index: 0;
+}
+
+/* ===== Content wrapper ===== */
+.vr-hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ===== Panel (glass FEEL, but no blur) ===== */
+.vr-panel {
+  width: min(100%, 840px);
+  padding: clamp(24px, 4vw, 36px) clamp(20px, 4vw, 40px);
+  border-radius: 26px;
+
+  background:
+    radial-gradient(
+      900px 600px at 0% 0%,
+      rgba(255, 255, 255, 0.04),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 100% 100%,
+      rgba(255, 255, 255, 0.03),
+      transparent 60%
+    ),
+    rgba(3, 10, 26, 0.9);
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+
+  text-align: center;
+}
+
+/* ===== Title ===== */
+.vr-title {
+  margin: 0 0 0.75rem;
+  text-shadow: none; /* make sure gradient text is crisp */
+}
+
+.vr-title span {
+  display: inline-block;
+}
+
+/* ===== Subtitle ===== */
+/* section-subtitle already uses body-muted; just tweak spacing */
+.vr-sub.section-subtitle {
+  margin-top: 0.1rem;
+  margin-bottom: 1.6rem;
+  color: var(--body-muted);
+  text-shadow: none;
+}
+
+/* ===== Buttons row ===== */
+.vr-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Base button */
+.vr-btn {
+  padding: 0.9rem 1.8rem;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 1rem;
+  text-decoration: none;
+  text-align: center;
+  min-width: 180px;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    filter 0.16s ease;
+}
+
+/* Primary button – uses your title gradient colors */
+.vr-btn-primary {
+  background: linear-gradient(90deg, var(--titleA), var(--titleD));
+  color: #061018;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+.vr-btn-primary:hover,
+.vr-btn-primary:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+  outline: none;
+}
+
+/* Secondary button – outline using peach ink */
+.vr-btn-secondary {
+  background: transparent;
+  color: var(--body-ink);
+  border: 1.5px solid var(--body-ink);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.vr-btn-secondary:hover,
+.vr-btn-secondary:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.5);
+  outline: none;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 640px) {
+  .vr-panel {
+    padding-inline: 18px;
+  }
+
+  .vr-actions {
+    flex-direction: column;
+  }
+
+  .vr-btn {
+    width: 100%;
+    min-width: 0;
+  }
+}

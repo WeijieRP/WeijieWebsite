@@ -1,0 +1,140 @@
+/* ===== Global base styles (styles.css) ===== */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;800;900&display=swap");
+
+:root {
+  /* Title gradient like your “Here Are Some Highlights” */
+  --titleA: #71c4ff;  /* blue */
+  --titleB: #8f8cff;  /* periwinkle */
+  --titleC: #c58ae8;  /* purple */
+  --titleD: #ff7ab5;  /* pink */
+
+  --body-bg: #050816;
+
+  /* 🔶 Warm peach body text like screenshot */
+  --body-ink: #fbd2a0;    /* main text */
+  --body-muted: #f6c28f;  /* secondary text */
+}
+
+/* ===== BODY & PAGE ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background:
+    radial-gradient(1200px 900px at 10% 0%, #142143 0%, transparent 60%),
+    radial-gradient(1200px 900px at 90% 0%, #34194a 0%, transparent 60%),
+    radial-gradient(1300px 900px at 50% 100%, #0b1725 0%, transparent 70%),
+    var(--body-bg);
+  color: var(--body-ink); /* 👈 default text = peach */
+}
+
+/* Optional layout shell so content isn’t full-width */
+.page-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+
+/* Generic text */
+p {
+  line-height: 1.6;
+  color: var(--body-muted); /* softer peach */
+  margin-top: 0;
+}
+
+/* ===== UNIVERSAL SECTION TITLES ===== */
+/* Use .title-aurora on any heading, or let it auto-apply to main H1/H2. */
+
+h1,
+h2,
+.title-aurora,
+.cta-title span,
+.pb-title,
+.pc-title {
+  /* gradient text */
+  background: linear-gradient(
+    90deg,
+    var(--titleA) 0%,
+    var(--titleB) 35%,
+    var(--titleC) 70%,
+    var(--titleD) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.6em;
+  text-shadow: none; /* ✅ NO glow, NO glass */
+}
+
+h1,
+.title-aurora {
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+}
+
+h2,
+.pb-title,
+.pc-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+/* Optional: a standard subtitle class you can reuse */
+.section-subtitle {
+  font-size: clamp(0.95rem, 1.7vw, 1.15rem);
+  font-weight: 500;
+  color: var(--body-muted);
+  max-width: 720px;
+  margin: 0 auto 1.8rem;
+  text-align: center;
+}
+/* Force all .title-aurora to always use global gradient */
+.title-aurora {
+  background: linear-gradient(
+    90deg,
+    var(--titleA) 0%,
+    var(--titleB) 35%,
+    var(--titleC) 70%,
+    var(--titleD) 100%
+  ) !important;
+
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+h1,
+h2 {
+  background: linear-gradient(
+    90deg,
+    var(--titleA),
+    var(--titleB),
+    var(--titleC),
+    var(--titleD)
+  ) !important;
+
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+/* Fix gradient text clipping for all .title-aurora titles */
+.title-aurora,
+h1.title-aurora,
+h2.title-aurora {
+  display: inline-block;           /* prevents clipping of descenders */
+  line-height: 1.12;               /* extra breathing room */
+  padding-bottom: 4px;             /* ensures g, y, p are not cut */
+}
