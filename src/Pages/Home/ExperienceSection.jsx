@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import "./experience.css";
 
-/* helpers */
 const toRad = (d) => (d * Math.PI) / 180;
 
 function maxDistWithinStage({ cx, cy, sw, sh, halfW, halfH, dx, dy, safe }) {
@@ -20,7 +19,6 @@ function maxDistWithinStage({ cx, cy, sw, sh, halfW, halfH, dx, dy, safe }) {
   return pos.length ? Math.min(...pos) : Number.POSITIVE_INFINITY;
 }
 
-/* reveal */
 function useReveal(rootRef) {
   useEffect(() => {
     const root = rootRef.current;
@@ -31,7 +29,7 @@ function useReveal(rootRef) {
         entries.forEach((e) =>
           e.target.classList.toggle("is-inview", e.isIntersecting)
         ),
-      { threshold: 0.14, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
@@ -91,21 +89,35 @@ export default function Experience() {
     const coreDisc = coreRef.current;
     if (!stage || !coreDisc) return;
 
+    const clearLines = () => {
+      pathRefs.current.forEach((p) => p?.setAttribute("d", ""));
+    };
+
     const layout = () => {
+      if (typeof window === "undefined") return;
+
+      const w = window.innerWidth;
+
+      // ✅ mobile/tablet: no lines + no absolute positioning
+      if (w <= 900) {
+        clearLines();
+        return;
+      }
+
       const sw = stage.clientWidth;
       const sh = stage.clientHeight;
 
-      const hubSize = coreDisc.offsetWidth || 360;
+      const hubSize = coreDisc.offsetWidth || 420;
       const radius = hubSize / 2;
 
       const cx = sw / 2;
       const cy = sh / 2;
 
-      // layout tuning
-      const SAFE = 48; // padding from stage edges
-      const EXTRA_RING = 70; // spacing outside the hub
-      const START_ON_RIM = 0.9; // where line starts on circle
-      const TIP_FADE = 14; // shorten near the card
+      // ✅ Spread to 4 sides (fix “too close”)
+      const SAFE = 10;          // keeps inside stage edges
+      const EXTRA_RING = 200;    // pushes cards outward
+      const START_ON_RIM = 0.92; // start line at rim
+      const GAP_TO_CARD = 4;    // stop before touching card
 
       items.forEach((it, i) => {
         const panel = panelRefs.current[i];
@@ -113,27 +125,27 @@ export default function Experience() {
         const grad = gradRefs.current[i];
         if (!panel || !path || !grad) return;
 
-        // quadrant angles
+        panel.classList.add("is-inview");
+
+        // angles to corners
         let angle;
-        if (it.corner === "tl") angle = 225; // ↖
-        else if (it.corner === "tr") angle = 315; // ↗
-        else if (it.corner === "bl") angle = 135; // ↙
-        else if (it.corner === "br") angle = 45; // ↘
+        if (it.corner === "tl") angle = 225;
+        else if (it.corner === "tr") angle = 315;
+        else if (it.corner === "bl") angle = 135;
         else angle = 45;
 
         const dx = Math.cos(toRad(angle));
         const dy = Math.sin(toRad(angle));
 
-        const halfW = (panel.offsetWidth || 0) / 2;
-        const halfH = (panel.offsetHeight || 0) / 2;
+        const halfW = panel.offsetWidth / 2;
+        const halfH = panel.offsetHeight / 2;
 
-        // how much the card extends in that direction
         const projectedHalf = Math.abs(dx) * halfW + Math.abs(dy) * halfH;
 
-        // distance from center: circle radius + card edge + spacing
+        // ✅ Ensure always outside hub (minDist)
+        const minDist = radius + projectedHalf + 140;
         const ringDist = radius + projectedHalf + EXTRA_RING;
 
-        // but don't go past the stage edges
         const maxDist = maxDistWithinStage({
           cx,
           cy,
@@ -146,67 +158,51 @@ export default function Experience() {
           safe: SAFE,
         });
 
-        const dist = Math.min(ringDist, maxDist);
+        const dist = Math.min(Math.max(minDist, ringDist), maxDist);
 
-        // final panel center position
+        // panel center
         const px = cx + dist * dx;
         const py = cy + dist * dy;
 
         panel.style.left = `${px}px`;
         panel.style.top = `${py}px`;
 
-        // ===== connector line =====
-
-        // start slightly inside the circle
+        // line start on hub rim
         const sx = cx + radius * START_ON_RIM * dx;
         const sy = cy + radius * START_ON_RIM * dy;
 
-        // vector from card center back toward hub
-        const vdx = -dx;
-        const vdy = -dy;
-
-        // distance from card center to its edge along that vector
-        const kx = vdx !== 0 ? halfW / Math.abs(vdx) : Infinity;
-        const ky = vdy !== 0 ? halfH / Math.abs(vdy) : Infinity;
+        // line end at card edge minus gap
+        const kx = dx !== 0 ? halfW / Math.abs(dx) : Infinity;
+        const ky = dy !== 0 ? halfH / Math.abs(dy) : Infinity;
         const k = Math.min(kx, ky);
 
-        const edgeX = px + vdx * k;
-        const edgeY = py + vdy * k;
+        const edgeX = px - dx * k;
+        const edgeY = py - dy * k;
 
-        const ex = edgeX + vdx * TIP_FADE;
-        const ey = edgeY + vdy * TIP_FADE;
+        const ex = edgeX - dx * GAP_TO_CARD;
+        const ey = edgeY - dy * GAP_TO_CARD;
 
         path.setAttribute("d", `M ${sx},${sy} L ${ex},${ey}`);
         grad.setAttribute("x1", sx);
         grad.setAttribute("y1", sy);
         grad.setAttribute("x2", ex);
         grad.setAttribute("y2", ey);
-
-        const stops = grad.querySelectorAll("stop");
-        if (stops.length === 3) {
-          stops[0].setAttribute("offset", "0%");
-          stops[0].setAttribute("stop-color", "rgba(150,178,255,0)");
-          stops[1].setAttribute("offset", "55%");
-          stops[1].setAttribute("stop-color", "rgba(150,178,255,.95)");
-          stops[2].setAttribute("offset", "100%");
-          stops[2].setAttribute("stop-color", "rgba(150,178,255,0)");
-        }
       });
     };
 
-    layout();
+    const run = () => requestAnimationFrame(() => requestAnimationFrame(layout));
+    run();
 
     let ro;
     if (typeof ResizeObserver !== "undefined") {
-      ro = new ResizeObserver(layout);
+      ro = new ResizeObserver(run);
       ro.observe(stage);
     }
-
-    window.addEventListener("resize", layout);
+    window.addEventListener("resize", run);
 
     return () => {
       if (ro) ro.disconnect();
-      window.removeEventListener("resize", layout);
+      window.removeEventListener("resize", run);
     };
   }, [items]);
 
@@ -218,12 +214,13 @@ export default function Experience() {
           backgroundImage:
             "url(/assets/HomeBackgroundImage/cloudy-1869753_1920.png)",
         }}
+        aria-hidden="true"
       />
 
       <div ref={stageRef} className="stage">
-        {/* CENTER CIRCLE — breathing + glowing */}
+        {/* HUB */}
         <div className="core breathe">
-          <div ref={coreRef} className="core-disc halo">
+          <div ref={coreRef} className="core-disc halo reveal">
             <h3 className="exp-title--galaxy">My Design Toolkit</h3>
             <p className="exp-desc">
               I craft seamless interfaces — these are the tools I rely on to
@@ -232,8 +229,8 @@ export default function Experience() {
           </div>
         </div>
 
-        {/* connectors */}
-        <svg className="arrows" width="100%" height="100%">
+        {/* LINES (desktop only via CSS) */}
+        <svg className="arrows" width="100%" height="100%" aria-hidden="true">
           <defs>
             {items.map((_, i) => (
               <linearGradient
@@ -248,6 +245,7 @@ export default function Experience() {
               </linearGradient>
             ))}
           </defs>
+
           {items.map((_, i) => (
             <path
               key={i}
@@ -258,22 +256,24 @@ export default function Experience() {
           ))}
         </svg>
 
-        {/* panels */}
-        {items.map((it, i) => (
-          <div
-            key={it.id}
-            ref={(el) => (panelRefs.current[i] = el)}
-            className="panel reveal"
-          >
-            <article className="panel-card">
-              <header className="panel-head">
-                <img className="tool" src={it.logo} alt={it.title} />
-                <h4 className="caption">{it.title}</h4>
-              </header>
-              <p className="copy">{it.copy}</p>
-            </article>
-          </div>
-        ))}
+        {/* PANELS */}
+        <div className="panels">
+          {items.map((it, i) => (
+            <div
+              key={it.id}
+              ref={(el) => (panelRefs.current[i] = el)}
+              className="panel reveal"
+            >
+              <article className="panel-card">
+                <header className="panel-head">
+                  <img className="tool" src={it.logo} alt={it.title} />
+                  <h4 className="caption">{it.title}</h4>
+                </header>
+                <p className="copy">{it.copy}</p>
+              </article>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
