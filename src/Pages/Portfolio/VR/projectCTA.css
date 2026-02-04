@@ -12,7 +12,6 @@
   display: grid;
   place-items: center;
 
-  /* Background image + a LITTLE darkening, but NO blur */
   background-color: var(--body-bg);
   background-size: cover;
   background-position: center 40%;
@@ -21,7 +20,7 @@
   isolation: isolate;
 }
 
-/* subtle vignette to help readability (still no blur) */
+/* subtle vignette (no blur) */
 .vr-hero-overlay {
   position: absolute;
   inset: 0;
@@ -72,15 +71,13 @@
 /* ===== Title ===== */
 .vr-title {
   margin: 0 0 0.75rem;
-  text-shadow: none; /* make sure gradient text is crisp */
+  text-shadow: none;
 }
-
 .vr-title span {
   display: inline-block;
 }
 
 /* ===== Subtitle ===== */
-/* section-subtitle already uses body-muted; just tweak spacing */
 .vr-sub.section-subtitle {
   margin-top: 0.1rem;
   margin-bottom: 1.6rem;
@@ -96,7 +93,6 @@
   flex-wrap: wrap;
 }
 
-/* Base button */
 .vr-btn {
   padding: 0.9rem 1.8rem;
   border-radius: 14px;
@@ -113,13 +109,12 @@
     filter 0.16s ease;
 }
 
-/* Primary button – uses your title gradient colors */
+/* Primary button */
 .vr-btn-primary {
   background: linear-gradient(90deg, var(--titleA), var(--titleD));
   color: #061018;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
 }
-
 .vr-btn-primary:hover,
 .vr-btn-primary:focus-visible {
   transform: translateY(-1px);
@@ -128,14 +123,13 @@
   outline: none;
 }
 
-/* Secondary button – outline using peach ink */
+/* Secondary button */
 .vr-btn-secondary {
   background: transparent;
   color: var(--body-ink);
   border: 1.5px solid var(--body-ink);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
-
 .vr-btn-secondary:hover,
 .vr-btn-secondary:focus-visible {
   transform: translateY(-1px);
@@ -144,18 +138,9 @@
   outline: none;
 }
 
-/* ===== Responsive ===== */
+/* Responsive */
 @media (max-width: 640px) {
-  .vr-panel {
-    padding-inline: 18px;
-  }
-
-  .vr-actions {
-    flex-direction: column;
-  }
-
-  .vr-btn {
-    width: 100%;
-    min-width: 0;
-  }
+  .vr-panel { padding-inline: 18px; }
+  .vr-actions { flex-direction: column; }
+  .vr-btn { width: 100%; min-width: 0; }
 }

@@ -14,6 +14,8 @@
   --body-ink: #fbd2a0;    /* main text */
   --body-muted: #f6c28f;  /* secondary text */
 }
+html, body { overflow-x: hidden; }
+
 
 /* ===== BODY & PAGE ===== */
 *,

@@ -1,9 +1,52 @@
-import React, { useEffect, useMemo, useRef } from "react";
+// Footer.jsx
+import React, { useEffect, useRef, useState } from "react";
 import "./footer.css";
 import { Link } from "react-router-dom";
 
+/* =========================
+   Deterministic PRNG (NO Math.random)
+   ========================= */
+function xfnv1a(str) {
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+function mulberry32(seed) {
+  let t = seed >>> 0;
+  return function () {
+    t += 0x6d2b79f5;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Stable bubbles based on a seed string (component id / route / etc.) */
+function makeBubbles(seedKey = "footer", count = 15) {
+  const rand = mulberry32(xfnv1a(`bubbles:${seedKey}:${count}`));
+  return Array.from({ length: count }, (_, i) => {
+    const size = rand() * 12 + 8;      // 8..20 px
+    const left = rand() * 100;         // 0..100%
+    const delay = rand() * 6;          // 0..6s
+    const duration = 10 + rand() * 8;  // 10..18s
+    return {
+      id: i,
+      size,
+      left,
+      delay,
+      duration,
+    };
+  });
+}
+
 export default function Footer() {
   const ref = useRef(null);
+
+  // ✅ Deterministic bubbles generated once (no Math.random anywhere)
+  const [bubbles] = useState(() => makeBubbles("weijie-footer", 15));
 
   // Reveal animation on scroll
   useEffect(() => {
@@ -11,6 +54,11 @@ export default function Footer() {
     if (!root) return;
 
     const els = root.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)) {
+      els.forEach((el) => el.classList.add("is-inview"));
+      return;
+    }
+
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -25,25 +73,13 @@ export default function Footer() {
     return () => io.disconnect();
   }, []);
 
-  // Floating bubbles stable
-  const bubbles = useMemo(
-    () =>
-      Array.from({ length: 15 }, (_, i) => ({
-        id: i,
-        size: Math.random() * 12 + 8,
-        left: Math.random() * 100,
-        delay: Math.random() * 6,
-        duration: 10 + Math.random() * 8,
-      })),
-    []
-  );
-
   return (
     <footer ref={ref} className="footer">
       {/* Background */}
       <div
         className="footer-bg"
         style={{ backgroundImage: 'url("/assets/footer.png")' }}
+        aria-hidden="true"
       />
 
       {/* Bubbles */}
@@ -55,8 +91,8 @@ export default function Footer() {
               width: `${b.size}px`,
               height: `${b.size}px`,
               left: `${b.left}%`,
-              animationDelay: `${b.delay}s`,
-              animationDuration: `${b.duration}s`,
+              animationDelay: `${b.delay.toFixed(2)}s`,
+              animationDuration: `${b.duration.toFixed(2)}s`,
             }}
           />
         ))}
@@ -72,6 +108,8 @@ export default function Footer() {
             src="/assets/Weijie_Logo1.png"
             alt="Wei Jie logo"
             style={{ width: "200px", height: "80px" }}
+            loading="lazy"
+            decoding="async"
           />
           <p>Full-Stack Vision. Design Precision. Real-World Creation.</p>
         </div>
@@ -87,7 +125,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Socials — ONLY <Link> */}
+        {/* Socials (keeping your <Link> style) */}
         <div className="footer-connect reveal" data-anim="up">
           <h4>Connect</h4>
           <div className="socials">

@@ -45,7 +45,7 @@ export default function TechStackSection({
     },
     {
       name: "Express.js",
-      icon: "/assets/Web_Icons/icons8-express-js-48.png",
+      icon: "/assets/icons8-express-js-96.png",
       use: "Framework for routes, authentication, and CRUD APIs.",
     },
     {
@@ -70,7 +70,7 @@ export default function TechStackSection({
     },
     {
       name: "Render",
-      icon: "/assets/Web_Icons/icons8-website-90.png",
+      icon: "/assets/VR_Icons/icons8-website-100.png",
       use: "Cloud deploy for app + live demo URL.",
     },
   ];

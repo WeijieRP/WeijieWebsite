@@ -8,10 +8,10 @@ export default function PortfolioHero({
   title = "CCA Tracker",
   subtitle = "A role-based web app for Co-Curricular Activities; students can view CCAs and schedules, teachers can create CCAs, manage sessions and attendance, and admins handle user roles, approvals, and platform settings. Built with Node.js, Express, EJS, MySQL, Bootstrap.",
 
-  primaryBtn = "Open Live Demo",
-  primaryLink = "#demo",
+  primaryBtn = "LinkedIn",
+  primaryLink = "https://www.linkedin.com/in/hooi-weijie-b13b11310",
   secondaryBtn = "View GitHub Repo",
-  secondaryLink = "#github",
+  secondaryLink = "https://github.com/WeijieRP",
 }) {
   const bgRef = useRef(null);
 

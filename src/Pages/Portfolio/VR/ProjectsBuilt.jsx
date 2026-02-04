@@ -5,9 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function ProjectsBuiltVR() {
   const rootRef = useRef(null);
-  const lastY = useRef(
-    typeof window !== "undefined" ? window.scrollY : 0
-  );
+  const lastY = useRef(typeof window !== "undefined" ? window.scrollY : 0);
   const dirRef = useRef("down");
 
   // Track scroll direction -> data-scroll="up|down"
@@ -32,9 +30,7 @@ export default function ProjectsBuiltVR() {
     if (!root) return;
 
     const cards = root.querySelectorAll(".vr-card");
-    const reduce = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)"
-    )?.matches;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
     if (reduce) {
       cards.forEach((c) => c.classList.add("is-in"));
@@ -43,9 +39,7 @@ export default function ProjectsBuiltVR() {
 
     const io = new IntersectionObserver(
       (entries) =>
-        entries.forEach((e) =>
-          e.target.classList.toggle("is-in", e.isIntersecting)
-        ),
+        entries.forEach((e) => e.target.classList.toggle("is-in", e.isIntersecting)),
       { threshold: 0.2 }
     );
 
@@ -73,11 +67,7 @@ export default function ProjectsBuiltVR() {
   ];
 
   return (
-    <section
-      className="vr-section"
-      ref={rootRef}
-      id="vr-projects"
-    >
+    <section className="vr-section" ref={rootRef} id="vr-projects" >
       <div
         className="vr-bg"
         aria-hidden="true"
@@ -88,19 +78,11 @@ export default function ProjectsBuiltVR() {
       />
 
       <header className="vr-header">
-        {/* Glass panel wraps title + subtitle */}
-        <div
-          className="vr-headpanel"
-          role="group"
-          aria-label="VR projects overview"
-        >
-          <h2 className="">
-            VR &amp; AR Projects I’ve Built
-          </h2>
+        <div className="vr-headpanel" role="group" aria-label="VR projects overview">
+          <h2 className="vr-title-emboss">VR &amp; AR Projects I’ve Built</h2>
           <p className="vr-subtitle">
-            These Unity projects explore AR image targets and VR escape
-            spaces, with a focus on clear actions, comfort, and a smooth
-            first-time experience.
+            These Unity projects explore AR image targets and VR escape spaces,
+            with a focus on clear actions, comfort, and a smooth first-time experience.
           </p>
         </div>
       </header>
@@ -113,23 +95,14 @@ export default function ProjectsBuiltVR() {
             data-dir={i % 2 === 0 ? "left" : "right"}
           >
             <figure className="vr-media">
-              <img
-                src={p.img}
-                alt={p.title}
-                loading="lazy"
-                decoding="async"
-              />
+              <img src={p.img} alt={p.title} loading="lazy" decoding="async" />
             </figure>
 
             <div className="vr-body">
               <h3 className="vr-name">{p.title}</h3>
               <p className="vr-desc">{p.desc}</p>
               <p className="vr-stack">{p.stack}</p>
-              <Link
-                to={p.href}
-                className="vr-btn"
-                aria-label={`View ${p.title}`}
-              >
+              <Link to={p.href} className="vr-btn" aria-label={`View ${p.title}`}>
                 View Project
               </Link>
             </div>

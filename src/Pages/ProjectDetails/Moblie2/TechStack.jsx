@@ -3,8 +3,10 @@ import "./techstack.css";
 
 export default function TechStackSection({
   id = "techstack",
-  bgImage = "/assets/PortfolioMoblieProjectDetail2BackgroundImage/carlos-kenobi-Knla5kYvsRE-unsplash.jpg",
-  fallbackImage = "/assets/PortfolioMoblieProjectDetail2BackgroundImage/carlos-kenobi-Knla5kYvsRE-unsplash.jpg",
+  bgImage =
+    "/assets/MobileProjectDetails2/abstract-7256616_1920.jpg",
+  fallbackImage =
+    "/assets/PortfolioMoblieProjectDetail2BackgroundImage/carlos-kenobi-Knla5kYvsRE-unsplash.jpg",
 }) {
   const vpRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(bgImage);
@@ -31,7 +33,7 @@ export default function TechStackSection({
     const tick = () => {
       const r = vpRef.current?.getBoundingClientRect();
       if (r && vpRef.current) {
-        const vh = innerHeight || 1;
+        const vh = window.innerHeight || 1;
         const enter = vh,
           leave = -r.height;
         const p = clamp((enter - r.top) / (enter - leave), 0, 1);
@@ -47,7 +49,7 @@ export default function TechStackSection({
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  // Reveal animations
+  // Reveal animations (kept)
   useEffect(() => {
     const root = vpRef.current;
     if (!root) return;
@@ -135,42 +137,47 @@ export default function TechStackSection({
     };
   }, []);
 
-  // ====== UPDATED TECH STACK ITEMS ======
-  
   const items = [
     {
-      name: "Flutter",
-      icon: "/assets/MobileIcons/icons8-flutter-48.png",
-      use: "I used Flutter to build the whole mobile app. It lets me design one interface that works on both Android and iOS smoothly.",
+      name: "React Native",
+      icon: "/assets/Web_Icons/icons8-react-js-96.png",
+      use: "Build the mobile UI with reusable components and smooth navigation.",
+      badge: "Frontend",
+    },
+    {
+      name: "Expo",
+      icon: "/assets/Icons/icons8-expo-96.png",
+      use: "Fast development workflow for building, testing, and deploying React Native apps.",
       badge: "Framework",
     },
     {
-      name: "Dart",
-      icon: "/assets/MobileIcons/icons8-dart-48.png",
-      use: "The app runs on Dart, Flutter’s programming language. It’s simple to read, quick to run, and makes the app feel fast.",
-      badge: "Language",
+      name: "Node.js",
+      icon: "/assets/Web_Icons/icons8-node-js-96.png",
+      use: "Runs the backend server to handle requests and connect to the database.",
+      badge: "Backend",
     },
     {
-      name: "Android Studio",
-      icon: "/assets/MobileIcons/icons8-android-studio-48.png",
-      use: "I used Android Studio for testing, running emulators, and building the final APK to deploy on Android devices.",
-      badge: "Development",
+      name: "Express.js",
+      icon: "/assets/icons8-express-js-96.png",
+      use: "Creates REST API routes for habits, categories, and progress tracking.",
+      badge: "API",
     },
     {
-      name: "Visual Studio Code",
-      icon: "/assets/MobileIcons/icons8-vs-code-48.png",
-      use: "Most of my coding was done in VS Code — it’s lightweight, clean, and makes it easy to preview UI and fix bugs quickly.",
+      name: "MySQL",
+      icon: "/assets/icons8-mysql-96.png",
+      use: "Stores user habits, categories, and progress records reliably.",
+      badge: "Database",
+    },
+    {
+      name: "VS Code",
+      icon: "/assets/Web_Icons/icons8-vs-code-96.png",
+      use: "Main editor for writing frontend + backend code and debugging quickly.",
       badge: "Editor",
     },
-
   ];
 
   return (
-    <section
-      className="section-bg tech-section"
-      id={id}
-      aria-label="Calorie Tracker App Tech Stack"
-    >
+    <section className="section-bg tech-section" id={id} aria-label="Green Habit Tracker Tech Stack">
       <div className="tech-viewport" ref={vpRef}>
         {/* Background */}
         <div className="bg-wrap" aria-hidden="true">
@@ -186,17 +193,11 @@ export default function TechStackSection({
 
         {/* Content */}
         <div className="tech-content">
-          <h2
-            className="tech-title"
-            data-reveal
-            data-side="center"
-            data-stagger
-          >
-            Tools and Platforms I Used to Build the Tracker
+          <h2 className="tech-title" data-reveal data-side="center" data-stagger>
+            Tech Stack for Green Habit Tracker
           </h2>
           <p className="tech-sub" data-reveal data-side="center" data-stagger>
-            These are the key tools that helped me design, build, and test the
-            Calorie & Exercise Tracker app smoothly.
+            These are the tools and platforms I used to build the mobile app, backend API, and database system.
           </p>
 
           <div className="tech-grid" role="list">
@@ -210,14 +211,12 @@ export default function TechStackSection({
                 data-side={i % 2 === 0 ? "left" : "right"}
               >
                 <div className="tech-card-head">
-                  <img
-                    src={t.icon}
-                    alt={t.name}
-                    className="tech-card-icon"
-                  />
+                  <img src={t.icon} alt={t.name} className="tech-card-icon" />
                   <h3 className="tech-card-title">{t.name}</h3>
                 </div>
+
                 <p className="tech-card-body">{t.use}</p>
+
                 <div className="tech-card-pills">
                   <span className="tech-pill">{t.badge}</span>
                 </div>

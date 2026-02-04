@@ -1,4 +1,3 @@
-/* learning.css */
 :root{
   --ink:#fff4e6;
   --muted:#fcd8b0;
@@ -28,24 +27,52 @@
   z-index:-1;
 }
 
-/* HEAD */
-.rl-head{ text-align:center; margin-bottom: clamp(20px,3vw,40px); }
-.rl-eyebrow{
-  letter-spacing:.28em;
-  text-transform:uppercase;
-  opacity:.9;
-  font-size:clamp(10px,1vw,13px);
-  color:var(--muted);
+/* ✅ NEW: Glass Header Panel */
+.rl-header-glass{
+  width: min(1100px, 96%);
+  margin: 0 auto clamp(16px, 3vw, 34px);
+  padding: clamp(18px, 3vw, 30px);
+  border-radius: 22px;
+
+  background:
+    radial-gradient(900px 520px at 0% 0%, rgba(255,255,255,.10), transparent 60%),
+    radial-gradient(900px 520px at 100% 100%, rgba(255,255,255,.08), transparent 60%),
+    rgba(10,16,28,.55);
+
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 26px 70px rgba(0,0,0,.55);
+  text-align: center;
 }
-.rl-title{
-  margin:6px 0 0;
-  font-weight:900;
-  line-height:1.05;
-  font-size:clamp(26px,4vw,42px);
-  background: linear-gradient(90deg, var(--accent), var(--muted));
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
+
+.rl-eyebrow-glass{
+  margin: 0 0 10px;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: clamp(10px, 1vw, 13px);
+  color: rgba(255,210,170,.92);
+}
+
+/* Big gradient title like screenshot */
+.rl-title-glass{
+  margin: 0;
+  font-weight: 900;
+  line-height: 1.04;
+  font-size: clamp(28px, 5vw, 56px);
+
+  background: linear-gradient(90deg, #67d3ff, #b597ff, #ff7ab5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.rl-subtitle-glass{
+  margin: 10px auto 0;
+  max-width: 900px;
+  color: rgba(252,216,176,.92);
+  font-weight: 650;
+  font-size: clamp(13px, 1.6vw, 16px);
+  line-height: 1.6;
 }
 
 /* METRICS */
@@ -58,6 +85,7 @@
   margin:0 0 18px;
 }
 @media (max-width:800px){ .rl-metrics{ grid-template-columns: repeat(2,1fr);} }
+
 .rl-metric{
   background:var(--glass);
   border:1px solid var(--stroke);
@@ -76,14 +104,10 @@
   gap:16px;
   margin-top:10px;
 }
-/* ✅ Make the last card span the full width (both columns) */
-.rl-grid .rl-card.wide{
-  grid-column: 1 / -1;
-}
+.rl-grid .rl-card.wide{ grid-column: 1 / -1; }
 
 @media (max-width:900px){
   .rl-grid{ grid-template-columns:1fr; }
-  /* On small screens it’s naturally 1 column; keep wide spanning safely */
   .rl-grid .rl-card.wide{ grid-column: 1 / -1; }
 }
 
@@ -98,7 +122,7 @@
 .rl-card:hover{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
 .rl-card-title{ margin:0 0 10px; font-size:16px; font-weight:800; }
 
-/* Body copy inside cards */
+/* Body copy */
 .rl-copy{
   margin: 0;
   color: var(--ink);
@@ -106,7 +130,7 @@
   line-height: 1.65;
 }
 
-/* === DIRECTION-AWARE SLIDE ENGINE === */
+/* === REVEAL ENGINE === */
 .reveal{
   opacity: 0;
   transform:

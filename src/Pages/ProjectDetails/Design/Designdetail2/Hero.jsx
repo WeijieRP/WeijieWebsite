@@ -11,10 +11,10 @@ export default function BrandMeHero({
   subtitle =
     "I design posters, character art, simple page layouts and social posts. I keep the look soft-glow, clear type, and roomy spacing so everything feels modern and easy to read.",
 
-  primaryBtn = "See my work",
-  primaryLink = "#portfolio",
-  secondaryBtn = "See how I design",
-  secondaryLink = "#process",
+  primaryBtn = "Github",
+  primaryLink = "https://github.com/WeijieRP",
+  secondaryBtn = "LinkedIn",
+  secondaryLink = "https://www.linkedin.com/in/hooi-weijie-b13b11310",
 }) {
   const bgRef = useRef(null);
 

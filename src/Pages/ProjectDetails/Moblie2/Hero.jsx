@@ -1,34 +1,28 @@
-// BrandMeHero.jsx (Calorie & Exercise Tracker App)
 import React, { useEffect, useRef } from "react";
 import "./hero.css";
 
-export default function BrandMeHero({
-  id = "calorie-hero",
-  bgImage = "/assets/PortfolioMoblieProjectDetail2BackgroundImage/brano-K2MsWQc0M0k-unsplash.jpg",
-
-  // 📱 Project context
-  eyebrow = "Mobile app built with Flutter & Dart",
-
-  // 🧭 Project theme — strong action tone
-  title = "Take Control of Your Fitness Journey",
+export default function GreenHabitHero({
+  id = "green-habit-hero",
+  bgImage = "/assets/MobileProjectDetails2/portal-7256636_1920.jpg",
+  eyebrow = "React Native Mobile Application Development",
+  title = "Green Habit\nTracker",
   subtitle =
-    "Track meals, workouts, and daily calories effortlessly — stay consistent and see your progress grow every day.",
-
-  // CTA
-  primaryBtn = "Contact Me",
-  primaryLink = "/case-study/calorie-tracker",
-  secondaryBtn = "View My Projects",
+    "Track eco-friendly habits, organise them by category, and see progress clearly — designed to make sustainable actions easier to keep up.",
+  primaryBtn = "View Case Study",
+  primaryLink = "/case-study/green-habit-tracker",
+  secondaryBtn = "View GitHub",
   secondaryLink = "https://github.com/WebDeveloper1299",
 }) {
-  const bgRef = useRef(null);
+  const bgImgRef = useRef(null);
+  const cardRef = useRef(null);
 
-  // Parallax zoom + drift (keeps edges covered)
+  // Parallax: translateY only (NO scale)
   useEffect(() => {
-    const el = bgRef.current;
-    if (!el) return;
+    const img = bgImgRef.current;
+    if (!img) return;
 
     let raf = 0;
-    const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
     const onScroll = () => {
       if (raf) return;
@@ -37,11 +31,9 @@ export default function BrandMeHero({
         const vh = window.innerHeight || 1;
         const p = clamp(y / (vh * 2), 0, 1);
         const eased = p * (2 - p);
-        const scale = 1.04 + eased * 0.12; // 1.04→1.16
-        const ty = eased * 18; // 0→18px
 
-        el.style.setProperty("--bg-scale", String(scale));
-        el.style.setProperty("--bg-ty", `${ty}px`);
+        const ty = (eased * 14).toFixed(1);
+        img.style.transform = `translate3d(0, ${ty}px, 0)`;
         raf = 0;
       });
     };
@@ -56,61 +48,56 @@ export default function BrandMeHero({
     };
   }, []);
 
-  // Simple reveal on enter
+  // Reveal only on the card
   useEffect(() => {
-    const section = document.getElementById(id);
-    const targets = section?.querySelectorAll("[data-reveal]");
-    if (!targets?.length) return;
+    const card = cardRef.current;
+    if (!card) return;
 
     const io = new IntersectionObserver(
       (entries) =>
-        entries.forEach((e) =>
-          e.target.classList.toggle("is-shown", e.isIntersecting)
-        ),
-      { threshold: 0.06, rootMargin: "-20% 0px -20% 0px" }
+        entries.forEach((e) => card.classList.toggle("is-shown", e.isIntersecting)),
+      { threshold: 0.15 }
     );
 
-    targets.forEach((t) => io.observe(t));
+    io.observe(card);
     return () => io.disconnect();
-  }, [id]);
+  }, []);
 
   return (
-    <section className="bm-hero" id={id}>
-      <div
-        className="bm-hero-bg"
-        ref={bgRef}
-        style={{ backgroundImage: `url(${bgImage})` }}
-      />
-      <div className="bm-hero-overlay" />
+    <section className="gh-hero" id={id} aria-label="Green Habit Tracker hero">
+      {/* background */}
+      <div className="gh-bgwrap" aria-hidden="true">
+        <img ref={bgImgRef} className="gh-bgimg" src={bgImage} alt="" />
+      </div>
 
-      <div className="bm-hero-inner">
-        <header className="bm-head">
-          <p className="bm-eyebrow" data-reveal>
-            <span>{eyebrow}</span>
-          </p>
+      <div className="gh-overlay" aria-hidden="true" />
 
-          <h1 className="bm-title" data-reveal>
-            <span>{title}</span>
+      <div className="gh-inner">
+        <article ref={cardRef} className="gh-glass">
+          <p className="gh-eyebrow">{eyebrow}</p>
+
+          {/* ✅ Use global gradient title style */}
+          <h1 className="gh-title title-aurora">
+            {title.split("\n").map((line, i) => (
+              <span key={i} className="gh-title-line">{line}</span>
+            ))}
           </h1>
 
-          <p className="bm-sub" data-reveal>
-            <span>{subtitle}</span>
-          </p>
+          {/* ✅ Subtitle uses global body-muted already in styles.css */}
+          <p className="gh-sub">{subtitle}</p>
 
-          <div className="bm-ctas" data-reveal>
-            <a className="bm-btn" href={primaryLink}>
-              {primaryBtn}
-            </a>
+          <div className="gh-ctas">
+            <a href={primaryLink} className="gh-btn primary">{primaryBtn}</a>
             <a
-              className="bm-btn ghost"
               href={secondaryLink}
               target="_blank"
               rel="noopener noreferrer"
+              className="gh-btn ghost"
             >
               {secondaryBtn}
             </a>
           </div>
-        </header>
+        </article>
       </div>
     </section>
   );

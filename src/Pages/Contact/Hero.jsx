@@ -11,9 +11,9 @@ export default function ProjectCTA({
   subtitle = "Let’s make the most of our time by building meaningful projects that inspire, connect, and create value for both users and ourselves.",
 
   leftBtnText = "Contact Me",
-  leftBtnLink = "/projects",
-  rightBtnText = "View Resume",
-  rightBtnLink = "/about",
+  leftBtnLink = "https://www.linkedin.com/in/hooi-weijie-b13b11310",
+  rightBtnText = "GitHub",
+  rightBtnLink = "https://github.com/WeijieRP",
 }) {
   const sectionRef = useRef(null);
 

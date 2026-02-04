@@ -5,15 +5,15 @@ export default function ArcMobileShowcase({
   // Background
   bgImage = "/assets/PortfolioMobileProjectDetails1BackgroundImage/chamfjord-muUX3rENBX0-unsplash.jpg",
 
-  // Right column text (wrapped in a glass card)
+  // Right column text
   title = "Mobile Demo — GPA Tracker",
-  description = "This is a short demo video showcase of the GPA Tracker app, recorded directly from a phone screen to show how the interface looks and feels in action.",
+  description =
+    "This is a short demo video showcase of the GPA Tracker app, recorded directly from a phone screen to show how the interface looks and feels in action.",
 
   // Media (portrait)
   videoSrc = "/assets/Moblie/GPAMobile.mp4",
   poster = "/assets/demo/gpa_poster.jpg",
 
-  // Video settings (kept as provided)
   autoPlay = true,
   loop = true,
   muted = true,
@@ -26,7 +26,7 @@ export default function ArcMobileShowcase({
     const root = sectionRef.current;
     if (!root) return;
 
-    // track scroll direction (kept as your flavor)
+    // track scroll direction
     const onScroll = () => {
       const y = window.scrollY || 0;
       root.setAttribute("data-scroll", y > lastY.current ? "down" : "up");
@@ -35,7 +35,7 @@ export default function ArcMobileShowcase({
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    // intersection-based slide in/out (LEFT/RIGHT only)
+    // reveal
     const nodes = root.querySelectorAll("[data-reveal]");
     const io = new IntersectionObserver(
       (entries) =>
@@ -56,33 +56,33 @@ export default function ArcMobileShowcase({
     return () => {
       window.removeEventListener("scroll", onScroll);
       nodes.forEach((n) => io.unobserve(n));
+      io.disconnect();
     };
   }, []);
 
   return (
-    <section className="arc-section" ref={sectionRef}>
+    <section className="arc-section arc-crisp" ref={sectionRef} aria-label="Mobile demo showcase">
       {/* Background */}
       <div className="arc-bg" aria-hidden="true">
         <img className="arc-bg-img" src={bgImage} alt="" />
         <div className="arc-overlay" />
       </div>
 
-      {/* Split layout */}
+      {/* Layout */}
       <div className="arc-grid">
-        {/* LEFT: Phone with inline video (slides from LEFT) */}
+        {/* LEFT: Phone */}
         <div className="arc-left reveal from-left" data-reveal>
           <div className="phone" aria-label="Mobile device preview">
             <div className="phone-bezel phone-bezel--wrap phone--tall">
-              {/* Side buttons */}
               <span className="btn-side btn-vol-up" />
               <span className="btn-side btn-vol-down" />
               <span className="btn-side btn-power" />
-              {/* Notch */}
+
               <div className="phone-notch">
                 <span className="phone-speaker" />
                 <span className="phone-camera" />
               </div>
-              {/* Natural-size portrait video */}
+
               <video
                 className="phone-screen phone-screen--natural"
                 src={videoSrc}
@@ -96,10 +96,11 @@ export default function ArcMobileShowcase({
               />
             </div>
           </div>
+
           <p className="arc-caption">A closer look at the app running on mobile.</p>
         </div>
 
-        {/* RIGHT: Glass card with title + description (slides from RIGHT) */}
+        {/* RIGHT: Info */}
         <div className="arc-right reveal from-right" data-reveal>
           <div className="glass-card">
             <h2 className="arc-title">{title}</h2>

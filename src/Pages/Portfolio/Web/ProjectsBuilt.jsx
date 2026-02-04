@@ -1,4 +1,3 @@
-// ProjectsBuilt.jsx
 import React, { useEffect, useRef } from "react";
 import "./projects-built.css";
 import { Link } from "react-router-dom";
@@ -22,7 +21,7 @@ export default function ProjectsBuilt() {
     img.src = PRIMARY_BG;
   }, []);
 
-  // Track scroll direction (adds data-scroll="up|down" on the section)
+  // Track scroll direction
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -39,14 +38,13 @@ export default function ProjectsBuilt() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Reveal cards on intersect (toggle .is-in)
+  // Reveal cards on intersect
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
 
     const cards = root.querySelectorAll(".pg-card");
-    const reduce =
-      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
     if (reduce) {
       cards.forEach((c) => c.classList.add("is-in"));
@@ -54,10 +52,7 @@ export default function ProjectsBuilt() {
     }
 
     const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) =>
-          e.target.classList.toggle("is-in", e.isIntersecting)
-        ),
+      (entries) => entries.forEach((e) => e.target.classList.toggle("is-in", e.isIntersecting)),
       { threshold: 0.18 }
     );
 
@@ -65,7 +60,6 @@ export default function ProjectsBuilt() {
     return () => io.disconnect();
   }, []);
 
-  // Projects
   const projects = [
     {
       title: "I built a Music Playlist Tracker",
@@ -99,19 +93,20 @@ export default function ProjectsBuilt() {
     <section className="pg-section" ref={rootRef} id="projects">
       <div className="pg-bg" aria-hidden="true" />
 
-      {/* HEADER – NO GLASS WRAPPER */}
+      {/* ✅ Header container (NO border/shadow) */}
       <header className="pg-header">
-        <h2 className="pg-title title-aurora">Web Projects I’ve Built</h2>
-
-        <p className="pg-subtitle section-subtitle">
-          Practical tools and school projects I designed, coded, and shipped.
-        </p>
+        {/* ✅ Only ONE panel */}
+        <div className="pg-header-panel">
+          <h2 className="pg-title">Web Projects I’ve Built</h2>
+          <p className="pg-subtitle">
+            Focused builds I shipped to solve real problems—fast, clear, and reliable.
+          </p>
+        </div>
       </header>
 
-      {/* GRID */}
       <div className="pg-grid pg-grid-2x2">
         {projects.map((p, i) => {
-          const spanFull = isOdd && i === projects.length - 1; // last odd spans full width
+          const spanFull = isOdd && i === projects.length - 1;
           const dir = spanFull ? "center" : i % 2 === 0 ? "left" : "right";
 
           return (
@@ -120,7 +115,6 @@ export default function ProjectsBuilt() {
               data-dir={dir}
               key={p.title}
             >
-              {/* Media */}
               <figure className="pg-media" data-fit={p.fit || "cover"}>
                 <img
                   src={p.img}
@@ -132,7 +126,6 @@ export default function ProjectsBuilt() {
                 />
               </figure>
 
-              {/* Body */}
               <div className="pg-body">
                 <h3 className="pg-card-title">{p.title}</h3>
                 <p className="pg-card-desc">{p.desc}</p>

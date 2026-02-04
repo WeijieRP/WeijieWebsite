@@ -1,18 +1,20 @@
-// ChallengeSection.jsx — AR Name Card problem section (standardised to global styles)
 import React, { useEffect, useRef } from "react";
 import "./challenge.css";
 
 export default function ChallengeSection({
   id = "portfolio",
-
   bgImage = "/assets/PortfolioVRProjectDetails1BackgroundImage/artyns-SF48tVdlyts-unsplash.jpg",
 
   eyebrow = "The challenge",
-  title = "Make a normal business card that works as an AR marker",
+
+  // ✅ shorter + simpler english title
+  title = "Design a business card that also works for AR",
+
+  // ✅ simpler english summary (keep as array if you want 3 paragraphs)
   summary = [
-    "The card should look like a premium, professional print piece. Clean layout, clear text, and brand style—no techy look.",
-    "At the same time, the artwork needs enough visual features and contrast so phones can detect it quickly and keep the 3D anchor stable, even in mixed lighting or when the card moves.",
-    "Avoid noisy textures, keep small text readable, and maintain brand consistency across print and AR. Success = fast detection, minimal jitter, and a card that still looks great in hand.",
+    "The card must look premium and professional: clean layout, readable text, and consistent branding (not too “techy”).",
+    "At the same time, it needs enough detail and contrast so the phone detects it fast and keeps the 3D object stable.",
+    "Success means fast detection, low jitter, and a card that still looks great in real life.",
   ],
 
   problemImage = "/assets/VR_ArtWork/Back.png",
@@ -22,7 +24,7 @@ export default function ChallengeSection({
   const rootRef = useRef(null);
   const vpRef = useRef(null);
 
-  // Parallax + subtle zoom on bg / stars
+  // Parallax + subtle zoom on bg / stars (UNCHANGED)
   useEffect(() => {
     let raf = 0;
     const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
@@ -38,8 +40,8 @@ export default function ChallengeSection({
         const p = clamp((enter - r.top) / (enter - leave), 0, 1);
         const d = Math.abs(p - 0.5) / 0.5;
 
-        const scale = 1.0 + (1 - d) * 0.04; // slightly calmer than before
-        const ty = (p - 0.5) * 60;          // -30 → +30
+        const scale = 1.0 + (1 - d) * 0.04;
+        const ty = (p - 0.5) * 60;
 
         vp.style.setProperty("--scroll-scale", scale.toFixed(3));
         vp.style.setProperty("--scroll-ty", `${ty.toFixed(1)}px`);
@@ -54,7 +56,7 @@ export default function ChallengeSection({
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  // Reveal in/out
+  // Reveal in/out (UNCHANGED)
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
@@ -82,21 +84,18 @@ export default function ChallengeSection({
     return () => io.disconnect();
   }, []);
 
-  // 1 or many paragraphs
-  const renderSummary = (s) => {
-    if (Array.isArray(s)) {
-      return s.map((para, i) => (
-        <p className="ch-summary" key={i} data-reveal="summary">
-          {para}
-        </p>
-      ));
-    }
-    return (
-      <p className="ch-summary" data-reveal="summary">
-        {s}
-      </p>
-    );
-  };
+  const renderSummary = (s) =>
+    Array.isArray(s)
+      ? s.map((para, i) => (
+          <p className="ch-summary" key={i} data-reveal="summary">
+            {para}
+          </p>
+        ))
+      : (
+          <p className="ch-summary" data-reveal="summary">
+            {s}
+          </p>
+        );
 
   return (
     <section
@@ -106,7 +105,6 @@ export default function ChallengeSection({
       aria-label="AR Name Card Problem Statement"
     >
       <div className="ch-viewport" ref={vpRef}>
-        {/* Background */}
         <div
           className="ch-bg kb-layer"
           style={{ backgroundImage: `url("${bgImage}")` }}
@@ -115,13 +113,14 @@ export default function ChallengeSection({
         <div className="ch-stars" aria-hidden="true" />
         <div className="ch-overlay" aria-hidden="true" />
 
-        {/* Content */}
         <div className="ch-inner">
           <div className="ch-left">
             <div className="ch-hero-card" data-reveal="title">
               {eyebrow && <p className="ch-eyebrow">{eyebrow}</p>}
-              {/* 🔹 Uses global gradient */}
-              <h2 className="ch-title title-aurora">{title}</h2>
+
+              {/* ✅ title smaller + better wrapping */}
+              <h2 className="ch-title">{title}</h2>
+
               {renderSummary(summary)}
             </div>
           </div>
@@ -130,7 +129,7 @@ export default function ChallengeSection({
             <figure className="ch-figure" data-reveal="figure">
               <img
                 src={problemImage}
-                alt="Business card used as AR image target (needs print clarity and AR features)"
+                alt="Business card used as AR image target"
                 className="ch-img"
                 loading="lazy"
               />

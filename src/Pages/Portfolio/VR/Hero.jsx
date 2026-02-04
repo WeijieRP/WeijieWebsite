@@ -31,15 +31,16 @@ export default function VRHero({
   titleTop = "FEATURED",
   titleBottom = "PROJECTS",
 
-  subtitle = "A collection of AR/VR experiences I built — focused on clear interaction, player comfort, and immersive moments.",
+  subtitle =
+    "A collection of AR/VR experiences I built — focused on clear interaction, player comfort, and immersive moments.",
 
-  // primary CTA (left)
-  ctaText = "View VR Demo",
-  ctaHref = "#vr-demo",
+  // ✅ Primary CTA: GitHub repo
+  ctaText = "View GitHub Repo",
+  ctaHref = "https://github.com/WeijieRP",
 
-  // secondary CTA (right)
+  // ✅ Secondary CTA: smooth scroll down
   secondaryText = "View Project Details",
-  secondaryHref = "#vr-details",
+  secondaryHref = "vr-projects",
 }) {
   const rootRef = useRef(null);
 
@@ -97,6 +98,18 @@ export default function VRHero({
     return () => io.disconnect();
   }, []);
 
+  // ✅ Smooth scroll handler for “View Project Details”
+  const onScrollToDetails = (e) => {
+    e.preventDefault();
+    const id = (secondaryHref || "").replace("#", "");
+    if (!id) return;
+
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <section
       className="hp-hero"
@@ -110,14 +123,12 @@ export default function VRHero({
         aria-hidden="true"
       />
 
-      {/* Light vignette only */}
       <div className="hp-hero__shade" aria-hidden="true">
         <div className="hp-hero__overlay" />
       </div>
 
       <div className="hp-hero__content">
         <div className="hp-hero__stack" data-hp-reveal>
-          {/* Glass panel wrapping title + subtitle + buttons */}
           <div className="hp-panel">
             <h1 className="hp-title">
               <span className="hp-title-line">
@@ -131,18 +142,23 @@ export default function VRHero({
             <p className="hp-sub">{subtitle}</p>
 
             <div className="hp-actions">
+              {/* ✅ Primary: GitHub repo */}
               <a
                 href={ctaHref}
                 className="hp-btn primary"
-                aria-label="Watch gameplay video"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open GitHub repository"
               >
                 {ctaText}
               </a>
 
+              {/* ✅ Secondary: smooth scroll */}
               <a
                 href={secondaryHref}
                 className="hp-btn secondary"
-                aria-label="View project details"
+                onClick={onScrollToDetails}
+                aria-label="Scroll to project details"
               >
                 {secondaryText}
               </a>

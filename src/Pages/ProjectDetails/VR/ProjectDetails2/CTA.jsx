@@ -1,7 +1,26 @@
 // FinalCTA.jsx — XR collaboration CTA (scroll-direction reveal, aurora title)
 import React, { useEffect, useRef } from "react";
 import "./cta.css";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // <-- if you see error, change to: import { Link } from "react-router-dom";
+
+/* ✅ Move SmartButton OUTSIDE component */
+function SmartButton({ to, className, children }) {
+  const external = /^https?:\/\//i.test(to || "");
+  return external ? (
+    <a
+      href={to}
+      className={className}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {children}
+    </a>
+  ) : (
+    <Link to={to || "#"} className={className}>
+      {children}
+    </Link>
+  );
+}
 
 export default function FinalCTA({
   id = "final-cta",
@@ -13,14 +32,13 @@ export default function FinalCTA({
   bgImage = "/assets/PortfolioVRProjectDetails2BackgroundImage/planet-6977161_1920.jpg",
 
   primaryHref = "https://www.linkedin.com/in/hooi-weijie-b13b11310",
-  secondaryHref = "https://github.com/WebDeveloper1299",
+  secondaryHref = "https://github.com/WeijieRP",
   primaryLabel = "Connect with Me",
-  secondaryLabel = "View Github",
+  secondaryLabel = "View GitHub",
 }) {
   const rootRef = useRef(null);
   const lastY = useRef(typeof window !== "undefined" ? window.scrollY : 0);
 
-  // TRACK SCROLL DIRECTION + REVEAL
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -35,7 +53,6 @@ export default function FinalCTA({
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    // Reveal engine
     const items = root.querySelectorAll(".fcta-snap");
     items.forEach((el, i) => el.style.setProperty("--i", i.toString()));
 
@@ -57,20 +74,6 @@ export default function FinalCTA({
     };
   }, []);
 
-  // INTERNAL vs EXTERNAL button helper
-  const SmartButton = ({ to, className, children }) => {
-    const external = /^https?:\/\//i.test(to || "");
-    return external ? (
-      <a href={to} className={className} target="_blank" rel="noopener noreferrer">
-        {children}
-      </a>
-    ) : (
-      <Link to={to || "#"} className={className}>
-        {children}
-      </Link>
-    );
-  };
-
   return (
     <section ref={rootRef} className="fcta-stage" id={id}>
       <div
@@ -81,13 +84,11 @@ export default function FinalCTA({
       <div className="fcta-overlay" aria-hidden="true" />
 
       <div className="fcta-content">
-        {/* 🔶 Glass wraps ONLY heading + tagline */}
         <div className="fcta-glass fcta-snap">
           <h2 className="fcta-heading">{heading}</h2>
           <p className="fcta-tagline">{tagline}</p>
         </div>
 
-        {/* Buttons outside glass, still animated */}
         <div className="fcta-actions fcta-snap">
           <SmartButton to={primaryHref} className="fcta-btn fcta-btn--primary">
             {primaryLabel}

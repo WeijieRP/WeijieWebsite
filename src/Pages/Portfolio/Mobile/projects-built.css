@@ -1,6 +1,5 @@
 /* ---- GLOBAL SECTION ---- */
 .pg-section {
-  /* use global palette so it matches rest of site */
   --pg-ink: var(--body-ink, #fbd2a0);
   --pg-muted: var(--body-muted, #f6c28f);
   --pg-chip: rgba(5, 10, 26, 0.72);
@@ -12,7 +11,7 @@
   width: 100vw;
   margin-left: calc(50% - 50vw);
   padding: clamp(56px, 8vw, 96px) clamp(16px, 4vw, 48px);
-  background: var(--body-bg, #050816);
+  background: var(--body-bg, #222b56);
   color: var(--pg-ink);
   overflow: hidden;
   text-align: center;
@@ -44,7 +43,6 @@
   text-align: center;
 }
 
-/* Title – match global gradient title style (no extra shadow) */
 .pg-title-metallic {
   margin: 0 0 0.6rem;
   font-size: clamp(2rem, 5vw, 3rem);
@@ -62,14 +60,10 @@
   background-clip: text;
   color: transparent;
 
-  /* kill any global fancy effects */
   text-shadow: none !important;
   filter: none !important;
-  letter-spacing: normal !important;
-  text-transform: none !important;
 }
 
-/* Subtitle under header */
 .pg-subtitle {
   margin: 0.3rem auto 0;
   max-width: 720px;
@@ -78,23 +72,32 @@
   color: var(--pg-muted);
 }
 
-/* ---- GRID CENTER ---- */
-.pg-grid-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* ✅ GRID 2-COLUMN (Desktop/Medium) */
+.pg-grid {
   width: 100%;
-  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  align-items: stretch;
+}
+
+/* ✅ Mobile = 1 column */
+@media (max-width: 740px) {
+  .pg-grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-header {
+    padding: 1.5rem 1.6rem;
+    margin-bottom: 40px;
+  }
 }
 
 /* ---- CARD ---- */
 .pg-card {
   width: 100%;
-  max-width: 780px;
   background: var(--pg-chip);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--pg-border);
   border-radius: 20px;
   overflow: hidden;
@@ -130,16 +133,6 @@
   text-align: center;
 }
 
-.pg-tag {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 14px;
-  margin-bottom: 6px;
-  font-weight: 700;
-}
-
 .pg-card-title {
   margin: 10px 0 8px;
   font-size: 22px;
@@ -170,16 +163,4 @@
 .pg-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(103, 211, 255, 0.45);
-}
-
-/* small screens: little extra breathing room */
-@media (max-width: 640px) {
-  .pg-header {
-    padding: 1.5rem 1.6rem;
-    margin-bottom: 40px;
-  }
-
-  .pg-body {
-    padding: 18px 16px 20px;
-  }
 }

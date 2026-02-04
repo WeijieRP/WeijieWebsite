@@ -1,4 +1,3 @@
-// ARImageCardDemo.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import "./videodemo.css";
@@ -9,18 +8,18 @@ export default function ARImageCardDemo({
   sub = "The video shows how the AR image card runs inside Unity with Vuforia engine",
   bgImage = "/assets/PortfolioVRProjectDetails1BackgroundImage/time-FFWOjjWCHU0-unsplash.jpg",
   cardFront = "/assets/VR_ArtWork/Font.png",
-  cardBack  = "/assets/VR_ArtWork/Back.png",
+  cardBack = "/assets/VR_ArtWork/Back.png",
   youtubeId = "",
-  mp4Src    = "/assets/Gameplay/AR_Project_Demo.mp4",
-  poster    = "/assets/ar-card-thumb.jpg",
+  mp4Src = "/assets/Gameplay/AR_Project_Demo.mp4",
+  poster = "/assets/ar-card-thumb.jpg",
   caption = "Real-time image tracking anchors the 3D logo as soon as the card is recognised.",
 }) {
   const rootRef = useRef(null);
   const lastY = useRef(typeof window !== "undefined" ? window.scrollY : 0);
   const dirRef = useRef("down");
 
-  const [showImg, setShowImg]     = useState(null);
-  const [showTips, setShowTips]   = useState(false);
+  const [showImg, setShowImg] = useState(null);
+  const [showTips, setShowTips] = useState(false);
   const [showSteps, setShowSteps] = useState(false);
 
   // scroll dir
@@ -47,35 +46,50 @@ export default function ARImageCardDemo({
       el.style.setProperty("--to-y", ty);
     };
 
-    const io = new IntersectionObserver((entries) => {
-      const dir = dirRef.current;
-      entries.forEach((e) => {
-        const el = e.target;
-        const side = el.getAttribute("data-side") || "center";
+    const io = new IntersectionObserver(
+      (entries) => {
+        const dir = dirRef.current;
+        entries.forEach((e) => {
+          const el = e.target;
+          const side = el.getAttribute("data-side") || "center";
 
-        const inVars  = 
-          side === "left"  ? (dir === "down" ? ["-48px","10px"] : ["48px","10px"]) :
-          side === "right" ? (dir === "down" ? ["48px","10px"]  : ["-48px","10px"]) :
-                             ["0px","18px"];
+          const inVars =
+            side === "left"
+              ? dir === "down"
+                ? ["-48px", "10px"]
+                : ["48px", "10px"]
+              : side === "right"
+              ? dir === "down"
+                ? ["48px", "10px"]
+                : ["-48px", "10px"]
+              : ["0px", "18px"];
 
-        const outVars =
-          side === "left"  ? (dir === "down" ? ["0px","0px","-48px","16px"] : ["0px","0px","48px","16px"]) :
-          side === "right" ? (dir === "down" ? ["0px","0px","48px","16px"]  : ["0px","0px","-48px","16px"]) :
-                             ["0px","0px","0px","18px"];
+          const outVars =
+            side === "left"
+              ? dir === "down"
+                ? ["0px", "0px", "-48px", "16px"]
+                : ["0px", "0px", "48px", "16px"]
+              : side === "right"
+              ? dir === "down"
+                ? ["0px", "0px", "48px", "16px"]
+                : ["0px", "0px", "-48px", "16px"]
+              : ["0px", "0px", "0px", "18px"];
 
-        if (e.isIntersecting) {
-          setVars(el, inVars[0], inVars[1], "0", "0");
-          el.classList.add("reveal","is-in");
-          el.classList.remove("is-out");
-        } else {
-          setVars(el, outVars[0], outVars[1], outVars[2], outVars[3]);
-          el.classList.add("reveal","is-out");
-          el.classList.remove("is-in");
-        }
-      });
-    }, { threshold: 0.18, rootMargin: "0px 0px -10% 0px" });
+          if (e.isIntersecting) {
+            setVars(el, inVars[0], inVars[1], "0", "0");
+            el.classList.add("reveal", "is-in");
+            el.classList.remove("is-out");
+          } else {
+            setVars(el, outVars[0], outVars[1], outVars[2], outVars[3]);
+            el.classList.add("reveal", "is-out");
+            el.classList.remove("is-in");
+          }
+        });
+      },
+      { threshold: 0.18, rootMargin: "0px 0px -10% 0px" }
+    );
 
-    targets.forEach((el,i) => {
+    targets.forEach((el, i) => {
       if (el.hasAttribute("data-stagger")) {
         el.style.transitionDelay = `${120 + (i % 5) * 70}ms`;
       }
@@ -87,19 +101,20 @@ export default function ARImageCardDemo({
 
   const hasYouTube = Boolean(youtubeId);
   const ytSrc = `https://www.youtube.com/embed/${youtubeId}?rel=0&modestbranding=1&playsinline=1`;
+
   const closeOnBackdrop = (setter) => (e) => {
     if (e.target.classList.contains("arc-modal")) setter(false);
   };
 
   return (
-    <section className="arc-section" id={id} ref={rootRef}>
-      <div className="arc-bg" style={{ backgroundImage: `url(${bgImage})` }} />
-      <div className="arc-overlay" />
+    <section className="arc-section arc-crisp" id={id} ref={rootRef}>
+      <div className="arc-bg" style={{ backgroundImage: `url(${bgImage})` }} aria-hidden="true" />
+      <div className="arc-overlay" aria-hidden="true" />
 
-      {/* Header (GLASS WRAP) */}
+      {/* Header */}
       <header className="arc-head" data-reveal data-side="center" data-stagger>
         <div className="arc-glass">
-          <h2 className="arc-title">{title}</h2>
+          <h2 className="arc-title title-aurora">{title}</h2>
           <p className="arc-sub">{sub}</p>
         </div>
       </header>
@@ -135,11 +150,18 @@ export default function ARImageCardDemo({
                   src={ytSrc}
                   title="AR Demo"
                   allow="autoplay; encrypted-media; picture-in-picture"
+                  allowFullScreen
                 />
               </div>
             ) : (
               <div className="arc-video-wrap">
-                <video className="arc-video" controls playsInline preload="metadata" poster={poster}>
+                <video
+                  className="arc-video"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster={poster}
+                >
                   <source src={mp4Src} type="video/mp4" />
                 </video>
               </div>
@@ -158,11 +180,14 @@ export default function ARImageCardDemo({
 
       {/* Image Modal */}
       {showImg && (
-        <div className="arc-modal" onClick={closeOnBackdrop(setShowImg)}>
-          <div className="arc-modal-card">
-            <button className="arc-x" onClick={() => setShowImg(null)} aria-label="Close">
-              <X size={20} />
-            </button>
+        <div className="arc-modal" onClick={closeOnBackdrop(setShowImg)} role="dialog" aria-modal="true">
+          <div className="arc-modal-card arc-modal-scroll" onClick={(e)=>e.stopPropagation()}>
+            <div className="arc-modal-head">
+              <h3>Card Preview</h3>
+              <button className="arc-x" onClick={() => setShowImg(null)} aria-label="Close">
+                <X size={20} />
+              </button>
+            </div>
             <img src={showImg} className="arc-modal-img" alt="Card preview" />
           </div>
         </div>
@@ -170,12 +195,12 @@ export default function ARImageCardDemo({
 
       {/* Tips Modal */}
       {showTips && (
-        <div className="arc-modal" onClick={closeOnBackdrop(setShowTips)}>
+        <div className="arc-modal" onClick={closeOnBackdrop(setShowTips)} role="dialog" aria-modal="true">
           <div className="arc-modal-card arc-modal-scroll" onClick={(e)=>e.stopPropagation()}>
             <div className="arc-modal-head">
               <h3>Target rating tips</h3>
               <button className="arc-x" onClick={() => setShowTips(false)} aria-label="Close">
-                <X size={20}/>
+                <X size={20} />
               </button>
             </div>
 
@@ -190,12 +215,12 @@ export default function ARImageCardDemo({
 
       {/* Steps Modal */}
       {showSteps && (
-        <div className="arc-modal" onClick={closeOnBackdrop(setShowSteps)}>
+        <div className="arc-modal" onClick={closeOnBackdrop(setShowSteps)} role="dialog" aria-modal="true">
           <div className="arc-modal-card arc-modal-scroll" onClick={(e)=>e.stopPropagation()}>
             <div className="arc-modal-head">
               <h3>Unity build steps</h3>
               <button className="arc-x" onClick={() => setShowSteps(false)} aria-label="Close">
-                <X size={20}/>
+                <X size={20} />
               </button>
             </div>
 

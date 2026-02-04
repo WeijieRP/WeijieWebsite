@@ -33,7 +33,7 @@ export default function ReflectionLearning({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Direction-aware enter/leave using CSS variables
+  // Direction-aware enter/leave using CSS variables (UNCHANGED)
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -107,6 +107,9 @@ export default function ReflectionLearning({
       {/* Background */}
       <div className="rl-bg" style={{ backgroundImage: `url(${bgImage})` }} />
 
+      {/* Contrast veil to ensure cards readable on bright areas */}
+      <div className="rl-veil" aria-hidden="true" />
+
       {/* Header (glass wraps eyebrow + title only) */}
       <header className="rl-head">
         <div className="rl-head-glass" data-reveal data-side="center" data-stagger>
@@ -121,14 +124,19 @@ export default function ReflectionLearning({
           <span className="rl-metric-value">2</span>
           <span className="rl-metric-label">Card sides</span>
         </li>
+
         <li className="rl-metric">
-          <span className="rl-metric-value">≥3<StarIcon size={15}/></span>
+          <span className="rl-metric-value rl-metric-inline">
+            ≥3 <StarIcon size={16} />
+          </span>
           <span className="rl-metric-label">Target rating</span>
         </li>
+
         <li className="rl-metric">
           <span className="rl-metric-value">1</span>
           <span className="rl-metric-label">3D model</span>
         </li>
+
         <li className="rl-metric">
           <span className="rl-metric-value">≤30s</span>
           <span className="rl-metric-label">Demo length</span>

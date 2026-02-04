@@ -126,7 +126,7 @@ export default function ProjectsBuilt() {
       <header className="pb-header">
         {/* One glass panel: title + subtitle + pills */}
         <div className="pb-headpanel">
-          <h2 className="pb-title">Projects I’ve Built</h2>
+          <h2 className="pb-title">Projects I've Built</h2>
           <p className="pb-sub">
             Clear, readable overlay on every card — no hover needed.
           </p>

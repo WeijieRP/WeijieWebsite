@@ -1,19 +1,58 @@
+// MilestonesLayout.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./milestones-section.css";
+
+/* =========================
+   Deterministic PRNG (NO Math.random)
+   ========================= */
+function xfnv1a(str) {
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+function mulberry32(seed) {
+  let t = seed >>> 0;
+  return function () {
+    t += 0x6d2b79f5;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function makeStars(sectionId = "certifications", count = 80) {
+  const rand = mulberry32(xfnv1a(`stars:${sectionId}:${count}`));
+  return Array.from({ length: count }).map((_, i) => {
+    const top = rand() * 100;
+    const left = rand() * 100;
+    const delay = (rand() * 4).toFixed(2);
+    const duration = (3 + rand() * 4).toFixed(2);
+    return {
+      id: i,
+      top: `${top}%`,
+      left: `${left}%`,
+      delay: `${delay}s`,
+      duration: `${duration}s`,
+    };
+  });
+}
 
 export default function MilestonesLayout({
   id = "certifications",
   bgImage = "/assets/AboutBackgroundImage/tom-barrett-hgGplX3PFBg-unsplash.jpg",
   title = "Achievements, Certifications and Competitions",
   subtitle = "Recognition earned through consistent practice and impact.",
+  // ✅ IMPORTANT: default items included so it won't be empty
   certs = [
     {
       title: "GeekOut Hackathon 2024",
       issuer: "GovTech Singapore",
       date: "2024",
       award: "Second Runner-up",
-      image: "assets/Certification/GeekOut_cert.png",
-      href: "assets/Certification/GeekOut_cert.png",
+      image: "/assets/Certification/GeekOut_cert.png",
+      href: "/assets/Certification/GeekOut_cert.png",
       blurb:
         "Built a web application to help students decide suitable career pathways.",
       skills: ["React", "Docker", "HTML", "CSS", "JavaScript"],
@@ -23,8 +62,8 @@ export default function MilestonesLayout({
       issuer: "Republic Polytechnic, School of Infocomm",
       date: "2024",
       award: "Director’s Roll of Honour",
-      image: "assets/Certification/RP_SEM1.png",
-      href: "assets/Certification/RP_SEM1.png",
+      image: "/assets/Certification/RP_SEM1.png",
+      href: "/assets/Certification/RP_SEM1.png",
       blurb:
         "Recognises top performers in the semester within my diploma cohort.",
     },
@@ -33,8 +72,8 @@ export default function MilestonesLayout({
       issuer: "Republic Polytechnic, School of Infocomm",
       date: "2024",
       award: "Director’s Roll of Honour",
-      image: "assets/Certification/RP_SEM2.png",
-      href: "assets/Certification/RP_SEM2.png",
+      image: "/assets/Certification/RP_SEM2.png",
+      href: "/assets/Certification/RP_SEM2.png",
       blurb:
         "Recognises top performers in the semester within my diploma cohort.",
     },
@@ -43,8 +82,8 @@ export default function MilestonesLayout({
       issuer: "Republic Polytechnic, School of Infocomm",
       date: "2025",
       award: "Director’s Roll of Honour",
-      image: "assets/Certification/RP_SEM1_2025.png",
-      href: "assets/Certification/RP_SEM1_2025.png",
+      image: "/assets/Certification/RP_SEM1_2025.png",
+      href: "/assets/Certification/RP_SEM1_2025.png",
       blurb:
         "Recognises top performers in the semester within my diploma cohort.",
     },
@@ -53,8 +92,8 @@ export default function MilestonesLayout({
       issuer: "ITE College Central, School of Infocomm Technology",
       date: "2022",
       award: "Director’s List",
-      image: "assets/Certification/ITE_HN_2022.png",
-      href: "assets/Certification/ITE_HN_2022.png",
+      image: "/assets/Certification/ITE_HN_2022.png",
+      href: "/assets/Certification/ITE_HN_2022.png",
       blurb:
         "Awarded to the top 10% of students for outstanding academic performance.",
     },
@@ -63,8 +102,8 @@ export default function MilestonesLayout({
       issuer: "Harishankaran K, CTO, HackerRank",
       date: "2025",
       award: "Skills Certification",
-      image: "assets/Certification/c_sharp_basic%20certificate.png",
-      href: "assets/Certification/c_sharp_basic%20certificate.png",
+      image: "/assets/Certification/c_sharp_basic%20certificate.png",
+      href: "/assets/Certification/c_sharp_basic%20certificate.png",
       blurb: "Passed the HackerRank Skills Certification test in C# (Basic).",
     },
     {
@@ -72,8 +111,8 @@ export default function MilestonesLayout({
       issuer: "Harishankaran K, CTO, HackerRank",
       date: "2025",
       award: "Skills Certification",
-      image: "assets/Certification/nodejs_basic%20certificate.png",
-      href: "assets/Certification/nodejs_basic%20certificate.png",
+      image: "/assets/Certification/nodejs_basic%20certificate.png",
+      href: "/assets/Certification/nodejs_basic%20certificate.png",
       blurb: "Passed the HackerRank Skills Certification test in Node.js (Basic).",
     },
     {
@@ -81,9 +120,8 @@ export default function MilestonesLayout({
       issuer: "Harishankaran K, CTO, HackerRank",
       date: "2025",
       award: "Skills Certification",
-      image:
-        "assets/Certification/javascript_intermediate%20certificate.png",
-      href: "assets/Certification/javascript_intermediate%20certificate.png",
+      image: "/assets/Certification/javascript_intermediate%20certificate.png",
+      href: "/assets/Certification/javascript_intermediate%20certificate.png",
       blurb:
         "Passed the HackerRank Skills Certification test in JavaScript (Intermediate).",
     },
@@ -92,8 +130,8 @@ export default function MilestonesLayout({
       issuer: "Harishankaran K, CTO, HackerRank",
       date: "2025",
       award: "Skills Certification",
-      image: "assets/Certification/react_basic%20certificate.png",
-      href: "assets/Certification/react_basic%20certificate.png",
+      image: "/assets/Certification/react_basic%20certificate.png",
+      href: "/assets/Certification/react_basic%20certificate.png",
       blurb: "Passed the HackerRank Skills Certification test in React (Basic).",
     },
     {
@@ -101,8 +139,8 @@ export default function MilestonesLayout({
       issuer: "CSIT (Centre for Strategic Infocomm Technologies)",
       date: "2025",
       award: "Participation",
-      image: "assets/Certification/TISC.png",
-      href: "assets/Certification/TISC.png",
+      image: "/assets/Certification/TISC.png",
+      href: "/assets/Certification/TISC.png",
       blurb:
         "Participated in an InfoSecurity challenge focusing on practical cybersecurity skills.",
     },
@@ -110,49 +148,36 @@ export default function MilestonesLayout({
 }) {
   const wrapRef = useRef(null);
 
+  // ✅ deterministic stars
+  const [stars] = useState(() => makeStars(id, 80));
+
   const [activeFilter, setActiveFilter] = useState("All");
-  const categories = [
-    "All",
-    "Hackathons",
-    "Academic",
-    "Professional Skills",
-    "Participation",
-  ];
+  const categories = ["All", "Hackathons", "Academic", "Professional Skills", "Participation"];
 
   const categorizedCerts = useMemo(() => {
     return certs.map((c) => {
       const t = `${c.title} ${c.award ?? ""} ${c.issuer ?? ""}`.toLowerCase();
       let cat = "Academic";
       if (t.includes("hackathon") || t.includes("geekout")) cat = "Hackathons";
-      else if (t.includes("hackerank") || t.includes("skills"))
-        cat = "Professional Skills";
-      else if ((c.award || "").toLowerCase().includes("participation"))
-        cat = "Participation";
-      else if (
-        t.includes("director") ||
-        t.includes("honour") ||
-        t.includes("honor")
-      )
-        cat = "Academic";
+      else if (t.includes("hackerank") || t.includes("skills")) cat = "Professional Skills";
+      else if ((c.award || "").toLowerCase().includes("participation")) cat = "Participation";
+      else if (t.includes("director") || t.includes("honour") || t.includes("honor")) cat = "Academic";
       return { ...c, category: cat };
     });
   }, [certs]);
 
-  const filtered =
-    activeFilter === "All"
-      ? categorizedCerts
-      : categorizedCerts.filter((c) => c.category === activeFilter);
+  const filtered = activeFilter === "All"
+    ? categorizedCerts
+    : categorizedCerts.filter((c) => c.category === activeFilter);
 
   const safeUrl = (url) => {
     if (typeof url !== "string") return url;
-    const parts = url.split("/").map((p) =>
-      encodeURIComponent(decodeURIComponent(p))
-    );
+    const parts = url.split("/").map((p) => encodeURIComponent(decodeURIComponent(p)));
     return parts.join("/");
   };
+
   const isImageHref = (href) =>
-    typeof href === "string" &&
-    /\.(png|jpe?g|gif|webp|bmp|svg)$/i.test(href);
+    typeof href === "string" && /\.(png|jpe?g|gif|webp|bmp|svg)$/i.test(href);
   const isPdfHref = (href) =>
     typeof href === "string" && /\.pdf(\?.*)?$/i.test(href);
 
@@ -165,14 +190,11 @@ export default function MilestonesLayout({
     setLightboxItem({
       ...item,
       _modalSrc: src,
-      _original: item.href
-        ? safeUrl(item.href)
-        : item.image
-        ? safeUrl(item.image)
-        : null,
+      _original: item.href ? safeUrl(item.href) : item.image ? safeUrl(item.image) : null,
     });
     setLightboxOpen(true);
   };
+
   const closeLightbox = () => {
     setLightboxOpen(false);
     setLightboxItem(null);
@@ -190,89 +212,73 @@ export default function MilestonesLayout({
     const el = wrapRef.current;
     if (!el) return;
     let raf = 0;
+
     const tick = () => {
       raf = 0;
       const r = el.getBoundingClientRect();
       const vh = window.innerHeight || 1;
       const centerY = r.top + r.height * 0.5 - vh * 0.5;
       const p = Math.max(-1, Math.min(1, -centerY / (vh * 0.9)));
+
       el.style.setProperty("--bg-ty", `${(p * 28).toFixed(1)}px`);
-      el.style.setProperty(
-        "--bg-scale",
-        (1.01 + Math.abs(p) * 0.02).toFixed(3)
-      );
-      el.style.setProperty(
-        "--bg-burn",
-        (1.06 - Math.abs(p) * 0.04).toFixed(3)
-      );
+      el.style.setProperty("--bg-scale", (1.01 + Math.abs(p) * 0.02).toFixed(3));
+      el.style.setProperty("--bg-burn", (1.06 - Math.abs(p) * 0.04).toFixed(3));
     };
+
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(tick);
     };
+
     tick();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
   }, []);
 
-  // scroll direction on wrapper
-  useEffect(() => {
-    const root = wrapRef.current;
-    if (!root) return;
-    let lastY = window.scrollY || 0;
-    const onScroll = () => {
-      const y = window.scrollY || 0;
-      const goingDown = y > lastY;
-      root.classList.toggle("dir-down", goingDown);
-      root.classList.toggle("dir-up", !goingDown);
-      lastY = y;
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   // intersection reveal
   useEffect(() => {
     const root = document.getElementById(id);
     if (!root) return;
+
     const observed = root.querySelectorAll("[data-observe]");
     if (!("IntersectionObserver" in window)) {
       observed.forEach((el) => el.classList.add("is-shown"));
       return;
     }
+
     let lastY = window.scrollY || 0;
     let scrollDir = "down";
+
     const onScroll = () => {
       const y = window.scrollY || 0;
       scrollDir = y > lastY ? "down" : "up";
       lastY = y;
     };
+
     window.addEventListener("scroll", onScroll, { passive: true });
+
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           const el = e.target;
           if (e.isIntersecting) {
             el.classList.remove("leave-up", "leave-down");
-            el.classList.add(
-              scrollDir === "down" ? "enter-up" : "enter-down",
-              "is-shown"
-            );
+            el.classList.add(scrollDir === "down" ? "enter-up" : "enter-down", "is-shown");
           } else {
             el.classList.remove("enter-up", "enter-down", "is-shown");
-            el.classList.add(
-              scrollDir === "down" ? "leave-up" : "leave-down"
-            );
+            el.classList.add(scrollDir === "down" ? "leave-up" : "leave-down");
           }
         });
       },
       { threshold: 0.12, rootMargin: "0px 0px -10% 0px" }
     );
+
     observed.forEach((el) => io.observe(el));
+
     return () => {
       io.disconnect();
       window.removeEventListener("scroll", onScroll);
@@ -280,10 +286,8 @@ export default function MilestonesLayout({
   }, [id, activeFilter, filtered.length]);
 
   const enc = (p) =>
-    p
-      .split("/")
-      .map((s) => encodeURIComponent(decodeURIComponent(s)))
-      .join("/");
+    p.split("/").map((s) => encodeURIComponent(decodeURIComponent(s))).join("/");
+
   const bgSrc = bgImage?.startsWith("/") ? enc(bgImage) : `/${enc(bgImage)}`;
 
   const onMediaKey = (e, item) => {
@@ -296,33 +300,27 @@ export default function MilestonesLayout({
   const onViewClick = (e, item) => {
     e.stopPropagation();
     const href = item.href ? safeUrl(item.href) : null;
-    if (href && isPdfHref(href)) {
-      window.open(href, "_blank", "noopener,noreferrer");
-    } else {
-      openLightbox(item);
-    }
+    if (href && isPdfHref(href)) window.open(href, "_blank", "noopener,noreferrer");
+    else openLightbox(item);
   };
 
   return (
     <section className="milestones-layout" id={id} ref={wrapRef}>
-      {/* background */}
+      {/* Background */}
       <div className="ml-bg-wrap" aria-hidden="true">
-        <div
-          className="milestones-bg"
-          style={{ backgroundImage: `url(${bgSrc})` }}
-        />
+        <div className="milestones-bg" style={{ backgroundImage: `url(${bgSrc})` }} />
         <div className="ml-top-fade" />
         <div className="ml-sweep" />
         <div className="ml-stars">
-          {Array.from({ length: 80 }).map((_, i) => (
+          {stars.map((s) => (
             <span
-              key={i}
+              key={s.id}
               className="ml-star"
               style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${(Math.random() * 4).toFixed(2)}s`,
-                animationDuration: `${(3 + Math.random() * 4).toFixed(2)}s`,
+                top: s.top,
+                left: s.left,
+                animationDelay: s.delay,
+                animationDuration: s.duration,
               }}
             />
           ))}
@@ -331,22 +329,13 @@ export default function MilestonesLayout({
 
       <div className="milestones-content" data-observe data-dir="left">
         <header className="milestones-header" data-observe data-dir="left">
-          {/* Glass wrapper for title + subtitle */}
-          <div
-            className="ml-header-glass"
-            role="group"
-            aria-roledescription="panel"
-          >
-            {/* 🔹 Title uses global gradient class */}
+          <div className="ml-header-glass" role="group" aria-roledescription="panel">
             <h2 className="milestones-title title-aurora">{title}</h2>
-
-            {/* 🔹 Subtitle uses global body subtitle */}
             <p className="milestones-sub section-subtitle">{subtitle}</p>
           </div>
           <div className="milestones-divider" />
         </header>
 
-        {/* filter pills */}
         <div className="filter-chips" data-observe data-dir="right">
           {categories.map((cat) => (
             <button
@@ -360,7 +349,6 @@ export default function MilestonesLayout({
           ))}
         </div>
 
-        {/* grid */}
         <div className="cert-grid">
           {filtered.map((c, i) => {
             const side = i % 2 === 0 ? "left" : "right";
@@ -373,9 +361,8 @@ export default function MilestonesLayout({
                 style={{ ["--delay"]: `${i * 90}ms` }}
                 tabIndex={0}
               >
-                {c.award ? (
-                  <span className="cert-ribbon">{c.award}</span>
-                ) : null}
+                {c.award ? <span className="cert-ribbon">{c.award}</span> : null}
+
                 <div
                   className="cert-media"
                   role="button"
@@ -385,21 +372,18 @@ export default function MilestonesLayout({
                   onKeyDown={(e) => onMediaKey(e, c)}
                 >
                   {c.image ? (
-                    <img
-                      src={safeUrl(c.image)}
-                      alt={c.title}
-                      loading="lazy"
-                      decoding="async"
-                    />
+                    <img src={safeUrl(c.image)} alt={c.title} loading="lazy" decoding="async" />
                   ) : (
                     <div className="cert-media--ph">🏅</div>
                   )}
                 </div>
+
                 <div className="cert-meta">
                   <h3 className="cert-title">{c.title}</h3>
                   <p className="cert-issuer">
                     <span>{c.issuer}</span> • <span>{c.date}</span>
                   </p>
+
                   {c.skills?.length ? (
                     <ul className="cert-tags" aria-label="Key skills">
                       {c.skills.slice(0, 4).map((s, si) => (
@@ -408,25 +392,21 @@ export default function MilestonesLayout({
                     </ul>
                   ) : null}
                 </div>
+
                 <div className="cert-hover">
                   <div className="cert-hover-body">
                     {c.blurb && <p className="cert-blurb">{c.blurb}</p>}
+
                     {c.skills?.length ? (
                       <div className="cert-skill-badges">
                         {c.skills.map((s, si) => (
-                          <span key={si} className="badge">
-                            {s}
-                          </span>
+                          <span key={si} className="badge">{s}</span>
                         ))}
                       </div>
                     ) : null}
+
                     <div className="cert-actions">
-                      <button
-                        className="btn-ghost"
-                        type="button"
-                        onClick={(e) => onViewClick(e, c)}
-                        aria-label={`View ${c.title}`}
-                      >
+                      <button className="btn-ghost" type="button" onClick={(e) => onViewClick(e, c)}>
                         View Certificate
                       </button>
                     </div>
@@ -452,58 +432,40 @@ export default function MilestonesLayout({
             if (e.target.classList.contains("lightbox")) closeLightbox();
           }}
         >
-          <button
-            className="lightbox-close"
-            type="button"
-            aria-label="Close"
-            onClick={closeLightbox}
-          >
+          <button className="lightbox-close" type="button" aria-label="Close" onClick={closeLightbox}>
             ✕
           </button>
+
           <div className="lb-stage">
             <div className="lb-img-wrap">
               {lightboxItem._modalSrc ? (
-                <img
-                  className="lightbox-img"
-                  src={lightboxItem._modalSrc}
-                  alt={lightboxItem.title}
-                />
+                <img className="lightbox-img" src={lightboxItem._modalSrc} alt={lightboxItem.title} />
               ) : (
-                <div className="lightbox-fallback">
-                  No preview available
-                </div>
+                <div className="lightbox-fallback">No preview available</div>
               )}
             </div>
+
             <div className="lb-caption">
               <div className="lb-caption-top">
                 <h3 className="lb-title">{lightboxItem.title}</h3>
                 <p className="lb-meta">
-                  <span>{lightboxItem.issuer}</span> •{" "}
-                  <span>{lightboxItem.date}</span>
+                  <span>{lightboxItem.issuer}</span> • <span>{lightboxItem.date}</span>
                 </p>
               </div>
-              {lightboxItem.blurb && (
-                <p className="lb-blurb">{lightboxItem.blurb}</p>
+
+              {lightboxItem.blurb && <p className="lb-blurb">{lightboxItem.blurb}</p>}
+
+              {Array.isArray(lightboxItem.skills) && lightboxItem.skills.length > 0 && (
+                <div className="lb-skill-badges">
+                  {lightboxItem.skills.map((s, i) => (
+                    <span key={i} className="badge">{s}</span>
+                  ))}
+                </div>
               )}
-              {Array.isArray(lightboxItem.skills) &&
-                lightboxItem.skills.length > 0 && (
-                  <div className="lb-skill-badges">
-                    {lightboxItem.skills.map((s, i) => (
-                      <span key={i} className="badge">
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                )}
+
               <div className="lb-actions">
                 {lightboxItem._original && (
-                  <a
-                    className="btn-ghost"
-                    href={lightboxItem._original}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="Open original file"
-                  >
+                  <a className="btn-ghost" href={lightboxItem._original} target="_blank" rel="noreferrer">
                     Open original
                   </a>
                 )}

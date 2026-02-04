@@ -9,14 +9,29 @@ export default function VRHero({
   titleTop = "FEATURED",
   titleBottom = "PROJECTS",
 
-  subtitle = "A collection of AR/VR experiences I built — focused on clear interaction, player comfort, and immersive moments.",
+  subtitle =
+    "A collection of AR/VR experiences I built — focused on clear interaction, player comfort, and immersive moments.",
 
-  ctaText = "View VR Demo",
-  ctaHref = "#vr-demo",
+  // ✅ Primary CTA: GitHub
+  ctaText = "View GitHub Repo",
+  ctaHref = "https://github.com/WeijieRP",
 
+  // ✅ Secondary CTA: scroll to section
   secondaryText = "View Project Details",
-  secondaryHref = "#vr-details",
+  secondaryHref = "#vr-projects",
 }) {
+  const onScrollToSection = (e) => {
+    // if it's an in-page anchor, smooth scroll
+    if (!secondaryHref?.startsWith("#")) return;
+    e.preventDefault();
+
+    const targetId = secondaryHref.replace("#", "");
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <section
       className="vr-hero"
@@ -26,9 +41,7 @@ export default function VRHero({
       <div className="vr-hero-overlay" aria-hidden="true" />
 
       <div className="vr-hero-content">
-        {/* Panel (no blur, just solid color + border) */}
         <div className="vr-panel">
-          {/* Title uses global gradient via .title-aurora */}
           <h1 className="vr-title title-aurora">
             <span>{titleTop}</span>
             <br />
@@ -38,11 +51,22 @@ export default function VRHero({
           <p className="vr-sub section-subtitle">{subtitle}</p>
 
           <div className="vr-actions">
-            <a href={ctaHref} className="vr-btn vr-btn-primary">
+            {/* ✅ GitHub */}
+            <a
+              href={ctaHref}
+              className="vr-btn vr-btn-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {ctaText}
             </a>
 
-            <a href={secondaryHref} className="vr-btn vr-btn-secondary">
+            {/* ✅ Smooth scroll to #vr-projects */}
+            <a
+              href={secondaryHref}
+              className="vr-btn vr-btn-secondary"
+              onClick={onScrollToSection}
+            >
               {secondaryText}
             </a>
           </div>

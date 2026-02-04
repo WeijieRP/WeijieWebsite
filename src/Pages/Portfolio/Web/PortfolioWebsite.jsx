@@ -4,15 +4,14 @@ import Footer from './Footer'
 import FeaturedProjectsZigZag from './FeaturedProjects'
 import ProjectCTA from './ProjectCTA'
 import Navbar from './Navbar'
-import ProjectsBuilt from './ProjectsBuilt'
 import FeaturedWeb from './FeaturedProjects'
+import ProjectsBuilt from './ProjectsBuilt'
 export default function PortfolioWebsite() {
   return (
     <>
     <Navbar/>
     
     <WebsiteHero/>
-    <FeaturedWeb/>
     <ProjectsBuilt/>
     <Footer/>
     </>

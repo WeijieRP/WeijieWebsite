@@ -1,18 +1,11 @@
 /* projects-built.css */
-/* Uses global styles.css tokens:
-   - var(--body-bg), var(--body-ink), var(--body-muted)
-   - .title-aurora for gradient heading
-   - .section-subtitle for subtitle text
-*/
 
-/* ===== Section + Local Tokens (scoped) ===== */
+/* Section */
 .pg-section {
-  /* local tokens, but derived from global ones where possible */
   --pg-ink: var(--body-ink);
   --pg-muted: var(--body-muted);
   --pg-bgcol: var(--body-bg, #050816);
 
-  /* solid surface instead of glass */
   --pg-surface: #0b1725;
   --pg-stroke: rgba(255, 255, 255, 0.12);
 
@@ -26,22 +19,19 @@
 
   --pg-dur: 0.55s;
   --pg-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-
   --pg-slide: 36px;
 
   position: relative;
   isolation: isolate;
   width: 100vw;
   margin-left: calc(50% - 50vw);
-
   padding: var(--pg-padY) var(--pg-padX);
   background: var(--pg-bgcol);
   color: var(--pg-ink);
-
   overflow: hidden;
 }
 
-/* Background image tint */
+/* Background image */
 .pg-bg {
   position: absolute;
   inset: 0;
@@ -52,34 +42,61 @@
   z-index: -1;
 }
 
-/* Optional helper if you ever need it */
+
+/* Title (gradient from global .title-aurora) */
+.pg-title {
+  margin: 0 0 10px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.16;
+}
+
+
+/* ✅ HARD RESET: remove any outer header box coming from old CSS */
+.pg-header{
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+  margin: 0 auto 40px !important;
+  max-width: 1100px !important;
+  text-align: center !important;
+}
+
+/* ✅ ONLY visible layer */
+.pg-header-panel{
+  display: inline-block;
+  width: min(980px, 100%);
+  padding: clamp(22px, 3vw, 34px);
+  border-radius: 22px;
+
+  background:
+    radial-gradient(900px 520px at 0% 0%, rgba(255,255,255,.10), transparent 60%),
+    radial-gradient(900px 520px at 100% 100%, rgba(255,255,255,.08), transparent 60%),
+    rgba(10,16,28,.70);
+
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 26px 70px rgba(0,0,0,.55);
+}
+
+/* ✅ ensure subtitle uses global peach and no extra wrapper effects */
+.pg-subtitle{
+  margin: 0;
+  color: var(--body-muted);
+  font-weight: 600;
+  max-width: 780px;
+  margin-inline: auto;
+}
+
+/* Grid */
 .pg-grid {
   position: relative;
   z-index: 1;
 }
 
-/* ===== Header (NO glass) ===== */
-.pg-header {
-  text-align: center;
-  max-width: 1100px;
-  margin: 0 auto 40px;
-}
-
-/* h2 gradient comes from global .title-aurora / h2 selector;
-   here we only tweak spacing + size */
-.pg-title {
-  margin: 0 0 12px;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.16;
-}
-
-/* subtitle typography from .section-subtitle (global);
-   here we just adjust spacing slightly */
-.pg-subtitle {
-  margin-top: 4px;
-}
-
-/* ===== Grid: 2×2; last odd spans full width ===== */
 .pg-grid-2x2 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -93,15 +110,11 @@
 }
 
 @media (max-width: 780px) {
-  .pg-grid-2x2 {
-    grid-template-columns: 1fr;
-  }
-  .pg-grid-2x2 .pg-card.span-full {
-    grid-column: auto;
-  }
+  .pg-grid-2x2 { grid-template-columns: 1fr; }
+  .pg-grid-2x2 .pg-card.span-full { grid-column: auto; }
 }
 
-/* ===== Card (SOLID SURFACE, no glass) ===== */
+/* Card */
 .pg-card {
   display: grid;
   grid-template-rows: auto 1fr;
@@ -155,7 +168,6 @@
   font-size: clamp(18px, 2.2vw, 22px);
   line-height: 1.28;
   font-weight: 800;
-  letter-spacing: 0.1px;
   color: var(--pg-ink);
 }
 
@@ -186,50 +198,24 @@
   filter: brightness(1.04);
 }
 
-/* Empty state (just in case) */
+/* Empty */
 .pg-empty {
   grid-column: 1 / -1;
   text-align: center;
   color: var(--pg-muted);
 }
 
-/* ===== Directional slide-in/out ===== */
-.pg-section[data-scroll="down"] .pg-card[data-dir="left"]:not(.is-in) {
-  transform: translateX(calc(-1 * var(--pg-slide)));
-  opacity: 0;
-}
-.pg-section[data-scroll="down"] .pg-card[data-dir="right"]:not(.is-in) {
-  transform: translateX(var(--pg-slide));
-  opacity: 0;
-}
-.pg-section[data-scroll="down"] .pg-card[data-dir="center"]:not(.is-in) {
-  transform: translateY(var(--pg-slide));
-  opacity: 0;
-}
+/* Directional slide */
+.pg-section[data-scroll="down"] .pg-card[data-dir="left"]:not(.is-in) { transform: translateX(calc(-1 * var(--pg-slide))); opacity: 0; }
+.pg-section[data-scroll="down"] .pg-card[data-dir="right"]:not(.is-in) { transform: translateX(var(--pg-slide)); opacity: 0; }
+.pg-section[data-scroll="down"] .pg-card[data-dir="center"]:not(.is-in) { transform: translateY(var(--pg-slide)); opacity: 0; }
 
-.pg-section[data-scroll="up"] .pg-card[data-dir="left"]:not(.is-in) {
-  transform: translateX(var(--pg-slide));
-  opacity: 0;
-}
-.pg-section[data-scroll="up"] .pg-card[data-dir="right"]:not(.is-in) {
-  transform: translateX(calc(-1 * var(--pg-slide)));
-  opacity: 0;
-}
-.pg-section[data-scroll="up"] .pg-card[data-dir="center"]:not(.is-in) {
-  transform: translateY(calc(-1 * var(--pg-slide)));
-  opacity: 0;
-}
+.pg-section[data-scroll="up"] .pg-card[data-dir="left"]:not(.is-in) { transform: translateX(var(--pg-slide)); opacity: 0; }
+.pg-section[data-scroll="up"] .pg-card[data-dir="right"]:not(.is-in) { transform: translateX(calc(-1 * var(--pg-slide))); opacity: 0; }
+.pg-section[data-scroll="up"] .pg-card[data-dir="center"]:not(.is-in) { transform: translateY(calc(-1 * var(--pg-slide))); opacity: 0; }
 
-.pg-card.is-in {
-  opacity: 1;
-  transform: translateX(0) translateY(0);
-}
+.pg-card.is-in { opacity: 1; transform: translateX(0) translateY(0); }
 
-/* Reduce motion */
 @media (prefers-reduced-motion: reduce) {
-  .pg-card {
-    transition: none;
-    transform: none;
-    opacity: 1;
-  }
+  .pg-card { transition: none; transform: none; opacity: 1; }
 }

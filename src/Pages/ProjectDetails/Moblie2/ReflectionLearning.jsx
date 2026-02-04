@@ -1,26 +1,26 @@
 import React, { useEffect, useRef } from "react";
-import { CheckCircle2, AlertTriangle, GraduationCap, StarIcon } from "lucide-react";
+import { CheckCircle2, AlertTriangle, GraduationCap } from "lucide-react";
 import "./learning.css";
 
 export default function ReflectionLearning({
   id = "reflection-learning",
-  eyebrow = "What I learned from this project",
-  title = "How building the Calorie & Exercise Tracker helped me grow",
-  bgImage = "/assets/PortfolioMoblieProjectDetail2BackgroundImage/moon-6892902.jpg",
+  eyebrow = "WHAT I LEARNED FROM THIS PROJECT",
+  title = "How working in a team helped me grow",
+  subtitle = "A short reflection on what went well, what was challenging, and what I learned while building this project.",
+  bgImage = "/assets/MobileProjectDetails2/ai-generated-7801994_1920.jpg",
 }) {
   const rootRef = useRef(null);
   const lastY = useRef(typeof window !== "undefined" ? window.scrollY : 0);
   const dirRef = useRef("down");
 
-  // ✅ Updated simple copy (Calorie & Exercise Tracker)
   const winsText =
-    "I built a working Calorie & Exercise Tracker with Flutter and Dart. You can log meals in seconds, add workouts, and see calories left for today instantly. The screens are clean, buttons are easy to tap, and the app feels fast on mobile. I’m happy that totals update right away and the experience is simple for everyday use.";
+    "Working in a team helped the project move faster and smoother. Each member had a clear role, and we supported each other when problems came up. By sharing ideas and checking each other’s work, we kept the design and implementation consistent.";
 
   const challengesText =
-    "Getting the calorie math right for many different foods and exercises was tough. I also fixed layout issues on small screens and handled edge cases like large inputs or edits. Managing state across the home, add-meal, and add-exercise screens took care and testing. It was tricky at first, but repeat testing helped me smooth it out.";
+    "Team collaboration was not always easy. Different opinions and working styles sometimes caused confusion. As the leader, I had to track progress, assign tasks, and make sure everything was correct and running. Balancing deadlines, communication, and quality was challenging.";
 
   const learningsText =
-    "I learned to plan the data flow before coding, manage app state clearly, and write UI that stays simple and friendly. I saw the value of testing on real devices to catch small bugs early. Most of all, I learned to balance clean design with correct logic so the app is useful, fast, and easy to trust every day.";
+    "I learned that communication and teamwork are key to success. I improved at planning tasks clearly, following up, and keeping everyone aligned. Being a leader is not just making decisions — it’s listening, supporting the team, and staying responsible until the final output works well.";
 
   // Track scroll direction
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function ReflectionLearning({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Direction-aware enter/leave animations
+  // Direction-aware reveal animations
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -104,29 +104,30 @@ export default function ReflectionLearning({
       {/* Background */}
       <div className="rl-bg" style={{ backgroundImage: `url(${bgImage})` }} />
 
-      {/* Header */}
-      <header className="rl-head" data-reveal data-side="center" data-stagger>
-        <p className="rl-eyebrow">{eyebrow}</p>
-        <h2 className="rl-title">{title}</h2>
+      {/* ✅ Glass Header Panel (like screenshot) */}
+      <header className="rl-header-glass" data-reveal data-side="center" data-stagger>
+        <p className="rl-eyebrow-glass">{eyebrow}</p>
+        <h2 className="rl-title-glass">{title}</h2>
+        <p className="rl-subtitle-glass">{subtitle}</p>
       </header>
 
-      {/* Metrics (tuned for tracker app) */}
+      {/* Metrics */}
       <ul className="rl-metrics" data-reveal data-side="center" data-stagger>
         <li className="rl-metric">
-          <span className="rl-metric-value">1</span>
-          <span className="rl-metric-label">Mobile App</span>
+          <span className="rl-metric-value">Team</span>
+          <span className="rl-metric-label">Project Type</span>
         </li>
         <li className="rl-metric">
-          <span className="rl-metric-value">100%</span>
-          <span className="rl-metric-label">Instant totals</span>
+          <span className="rl-metric-value">Leader</span>
+          <span className="rl-metric-label">Role</span>
         </li>
         <li className="rl-metric">
-          <span className="rl-metric-value">6+</span>
-          <span className="rl-metric-label">Core features</span>
+          <span className="rl-metric-value">Clear</span>
+          <span className="rl-metric-label">Communication</span>
         </li>
         <li className="rl-metric">
-          <span className="rl-metric-value">Offline</span>
-          <span className="rl-metric-label">Works anywhere</span>
+          <span className="rl-metric-value">Done</span>
+          <span className="rl-metric-label">Delivery</span>
         </li>
       </ul>
 

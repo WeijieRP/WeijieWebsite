@@ -11,9 +11,9 @@ export default function ProjectCTA({
   subtitle = "A collection of the projects I’ve worked on, including the design process, development journey, and finished pieces.",
 
   leftBtnText = "See Projects",
-  leftBtnLink = "/projects",
-  rightBtnText = "Resume",
-  rightBtnLink = "/about",
+  leftBtnLink = "https://github.com/WeijieRP",
+  rightBtnText = "LinkedIn",
+  rightBtnLink = "https://www.linkedin.com/in/hooi-weijie-b13b11310",
 }) {
   const ref = useRef(null);
 

@@ -9,7 +9,7 @@ export default function BrandMeSolution({
   sectionBg = "/assets/PortfolioVRProjectDetails2BackgroundImage/boliviainteligente-bGNVZnk9ymk-unsplash.jpg",
 
   // Right-side illustration
-  visual = "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1600&q=80",
+  visual = "/assets/Screenshot.png",
 
   // Copy
   eyebrow = "Solution",

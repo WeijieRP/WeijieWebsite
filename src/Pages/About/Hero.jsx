@@ -11,9 +11,9 @@ export default function ProjectCTA({
   subtitle = "Get to know me more and take a quick snapshot of my background, tools, and what I’m building next.",
 
   leftBtnText = "See Projects",
-  leftBtnLink = "/projects",
-  rightBtnText = "Resume",
-  rightBtnLink = "/about",
+  leftBtnLink = "https://github.com/WeijieRP",
+  rightBtnText = "LinkedIn",
+  rightBtnLink = "https://www.linkedin.com/in/hooi-weijie-b13b11310",
 }) {
   const ref = useRef(null);
 

@@ -11,7 +11,7 @@ export default function ProjectCTA({
   leftBtnText = "Contact Me",
   leftBtnLink = "https://www.linkedin.com/in/hooi-weijie-b13b11310",
   rightBtnText = "See My Project",
-  rightBtnLink = "https://github.com/WebDeveloper1299",
+  rightBtnLink = "https://github.com/WeijieRP",
 }) {
   const sectionRef = useRef(null);
 

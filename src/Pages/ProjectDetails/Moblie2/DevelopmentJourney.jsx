@@ -2,107 +2,58 @@ import React, { useRef, useEffect, useState } from "react";
 import "./journey.css";
 
 export default function DesignJourneyCarousel({
-  id = "gpa-journey",
-  bgImage = "/assets/PortfolioMoblieProjectDetail2BackgroundImage/universe.png",
+  id = "green-habit-journey",
+  bgImage = "/assets/MobileProjectDetails2/futuristic-7789221_1920.jpg",
   items = [
     {
       week: "Week 1",
-      title: "Set the Goal",
-      badges: ["Planning", "Research", "Setup"],
+      title: "Ideation, Research & Scope",
+      badges: ["Brainstorm", "Research", "Scope"],
       tasks: [
-        "Decided to build a Calorie & Exercise Tracker with Flutter + Dart.",
-        "Wrote the main problem: log meals fast, see calories left, add workouts easily.",
-        "Created the Flutter project, set up folders and basic routes.",
-      ],
-    },
-    {
-      week: "Week 1",
-      title: "Wireframes & Flow",
-      badges: ["UI Design", "Figma", "Layout"],
-      tasks: [
-        "Sketched the Home: daily calories left + quick add buttons.",
-        "Designed simple forms for adding meals and exercises.",
-        "Mapped flow: Home → Add Meal → Add Exercise → Progress.",
+        "Brainstormed rough ideas for the app and what problem we want to solve.",
+        "Did research (YouTube, examples) and used LLM tools to generate and refine ideas.",
+        "Defined the project scope: key features, what is included/excluded, and success criteria.",
+        "Planned who does what before starting implementation (roles + responsibilities).",
       ],
     },
     {
       week: "Week 2",
-      title: "Build Core Screens",
-      badges: ["Flutter", "Dart", "UI Coding"],
+      title: "Start Implementation & Task Allocation",
+      badges: ["Setup", "Teamwork", "Execution"],
       tasks: [
-        "Built Home to show today’s calories and quick shortcuts.",
-        "Coded Add Meal: food name, calories, portion, time.",
-        "Coded Add Exercise: type, duration, calories burned.",
-      ],
-    },
-    {
-      week: "Week 2",
-      title: "Calorie Logic & State",
-      badges: ["Logic", "State", "Testing"],
-      tasks: [
-        "Added functions to compute intake, burn, and net calories.",
-        "Hooked up state so totals update instantly on add/edit/delete.",
-        "Tested empty inputs, big values, and edge edits.",
-      ],
-    },
-    {
-      week: "Week 2–3",
-      title: "Theme & Readability",
-      badges: ["Theme", "Typography", "Brand"],
-      tasks: [
-        "Picked clear fonts and high-contrast colors for quick reading.",
-        "Added friendly icons for meals, snacks, and workouts.",
-        "Kept spacing consistent for easy taps on small screens.",
+        "Set up the project structure and prepared the base screens/components.",
+        "Dedicated tasks to each member (frontend, backend, UI, testing) with clear deliverables.",
+        "Created milestones and deadlines so everyone knows what to finish each week.",
       ],
     },
     {
       week: "Week 3",
-      title: "Better Experience",
-      badges: ["UX", "Interaction", "Feedback"],
+      title: "Team Coordination & Progress Tracking",
+      badges: ["Leadership", "Milestones", "Communication"],
       tasks: [
-        "Small animations when totals change.",
-        "Snackbars for save/delete with clear messages.",
-        "Scaled layouts to work well on small and large devices.",
-      ],
-    },
-    {
-      week: "Week 3",
-      title: "Works Without Internet (Offline-First)",
-      badges: ["Offline", "Sync", "Local Storage"],
-      tasks: [
-        "Saved meals and exercises to local storage first (e.g.SQLite).",
-        "If offline: app still shows totals and lets you add/edit items.",
-        "When back online: queued changes auto-sync to the server.",
+        "Kept track of everyone’s progress and checked if tasks met the requirements.",
+        "Helped teammates solve issues and ensured the app stays consistent as a team.",
+        "Aligned the team on UI/UX decisions so the app looks and feels the same throughout.",
       ],
     },
     {
       week: "Week 3–4",
-      title: "QA & Fixes",
-      badges: ["QA", "Refinement", "Fixes"],
+      title: "Meetings, Review & Improvements",
+      badges: ["Meetings", "Review", "Refinement"],
       tasks: [
-        "Tested on emulator and a real Android phone.",
-        "Fixed small overflows on tiny screens and very long names.",
-        "Removed unused code and improved first-launch load time.",
+        "Held regular meetings to update progress and adjust plans when needed.",
+        "Reviewed features together and fixed bugs or missing edge cases.",
+        "Polished the flow and wording to keep the app simple and easy to use.",
       ],
     },
     {
       week: "Week 4",
-      title: "UI Polish",
-      badges: ["Refine", "Consistency", "Finishing Touch"],
+      title: "Presentation & Live Demo",
+      badges: ["Demo", "Presentation", "Final"],
       tasks: [
-        "Balanced colors for light/dark and sharpened icon clarity.",
-        "Smoothed transitions between screens.",
-        "Rewrote labels/buttons with simple, clear language.",
-      ],
-    },
-    {
-      week: "Week 4",
-      title: "Build & Showcase",
-      badges: ["Build", "Demo", "Presentation"],
-      tasks: [
-        "Built the final APK for Android.",
-        "Recorded a short demo of logging meals and viewing progress.",
-        "Prepared a short deck to explain choices and key features.",
+        "Prepared slides and key talking points for class presentation.",
+        "Ran a live demo of the app to show the main flows and features clearly.",
+        "Did final checks to ensure everything runs smoothly before presenting.",
       ],
     },
   ],
@@ -130,7 +81,7 @@ export default function DesignJourneyCarousel({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [items.length]);
 
   // Drag / Swipe
   const startX = useRef(0);
@@ -147,6 +98,7 @@ export default function DesignJourneyCarousel({
     if (!isDown.current || !trackRef.current) return;
     const x = e.clientX ?? e.touches?.[0]?.clientX ?? startX.current;
     deltaX.current = x - startX.current;
+
     trackRef.current.style.transition = "none";
     const base = -index * 100;
     const percentShift = (deltaX.current / trackRef.current.clientWidth) * 100;
@@ -157,6 +109,7 @@ export default function DesignJourneyCarousel({
     if (!trackRef.current) return;
     trackRef.current.style.transition = "";
     isDown.current = false;
+
     const threshold = trackRef.current.clientWidth * 0.12;
     if (deltaX.current > threshold) prev();
     else if (deltaX.current < -threshold) next();
@@ -165,13 +118,13 @@ export default function DesignJourneyCarousel({
 
   return (
     <section className="tf-stage" id={id} aria-label="Development journey timeline">
-      <div className="tf-bg" style={{ backgroundImage: `url(${bgImage})` }} />
-      <div className="tf-overlay" />
+      <div className="tf-bg" style={{ backgroundImage: `url(${bgImage})` }} aria-hidden="true" />
+      <div className="tf-overlay" aria-hidden="true" />
 
       <div className="tf-container">
-        <h2 className="tf-title">How I Built the App</h2>
+        <h2 className="tf-title">How We Built Green Habit Tracker</h2>
         <p className="tf-sub">
-          A week-by-week view of planning, design, build, testing, and release for my Calorie & Exercise Tracker.
+          A timeline of ideation, task allocation, teamwork, progress tracking, and final live demo.
         </p>
 
         <div
@@ -210,6 +163,7 @@ export default function DesignJourneyCarousel({
 
         <div className="tf-controls">
           <button className="tf-btn" onClick={prev} aria-label="Previous slide">←</button>
+
           <div className="tf-dots" role="tablist" aria-label="Slide dots">
             {items.map((_, i) => (
               <button
@@ -222,6 +176,7 @@ export default function DesignJourneyCarousel({
               />
             ))}
           </div>
+
           <button className="tf-btn" onClick={next} aria-label="Next slide">→</button>
         </div>
       </div>

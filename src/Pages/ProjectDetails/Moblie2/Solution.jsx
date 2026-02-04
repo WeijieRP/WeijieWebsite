@@ -1,90 +1,80 @@
-// BrandMeSolution.jsx (Calorie & Exercise Tracker)
 import React, { useEffect, useRef } from "react";
 import "./solution.css";
 
-export default function BrandMeSolution({
-  id = "brandme-solution",
-  sectionBg = "/assets/PortfolioMoblieProjectDetail2BackgroundImage/daniel-olah-_j6wbAlQ1ow-unsplash.jpg",
-  // ✅ Replace visual with fitness mockup or stock photo
-  visual = "https://images.unsplash.com/photo-1579758629938-03607ccdbaba?q=80&w=1800&auto=format&fit=crop",
+export default function GreenHabitSolutionShowcase({
+  id = "green-habit-solution",
+  bgImage = "/assets/MobileProjectDetails2/uhd-6686654_1920.jpg",
+  rightImage =
+    "/assets/MobileProjectDetails2/Solutionss.png",
 }) {
-  const sectionRef = useRef(null);
-  const imgRef = useRef(null);
+  const rootRef = useRef(null);
 
-  // Reveal on scroll (fade in when visible)
+  // reveal animation
   useEffect(() => {
-    const targets = sectionRef.current.querySelectorAll("[data-ani]");
+    const root = rootRef.current;
+    if (!root) return;
+
+    const targets = root.querySelectorAll("[data-reveal]");
     const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) e.target.classList.add("in-view");
-          else e.target.classList.remove("in-view");
-        });
-      },
-      { threshold: 0.18 }
+      (entries) =>
+        entries.forEach((e) =>
+          e.target.classList.toggle("is-in", e.isIntersecting)
+        ),
+      { threshold: 0.12 }
     );
-    targets.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
 
-  // Parallax effect for the image
-  useEffect(() => {
-    const onScroll = () => {
-      const y = (window.scrollY || 0) * 0.12;
-      if (imgRef.current) {
-        imgRef.current.style.transform = `translate3d(0, ${y}px, 0) scale(1.05)`;
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    targets.forEach((t) => io.observe(t));
+    return () => io.disconnect();
   }, []);
 
   return (
     <section
       id={id}
-      ref={sectionRef}
-      className="bms-stage"
-      style={{ backgroundImage: `url(${sectionBg})` }}
-      aria-label="Calorie Tracker solution"
+      ref={rootRef}
+      className="ghs2-section"
+      style={{ ["--ghs2-bg"]: `url("${bgImage}")` }}
+      aria-label="Green Habit Tracker solution and approach"
     >
-      <div className="bms-overlay" aria-hidden="true" />
+      <div className="ghs2-bg" aria-hidden="true" />
+      <div className="ghs2-vignette" aria-hidden="true" />
+      <div className="ghs2-planet" aria-hidden="true" />
 
-      <div className="bms-inner">
-        {/* LEFT: Solution Description */}
-        <div className="bms-col-left" data-ani>
-          <div className="bms-card">
-            <p className="bms-eyebrow">Calorie & Exercise Tracker</p>
-            <h2 className="bms-title">Solution & Approach</h2>
+      <div className="ghs2-inner">
+        {/* LEFT GLASS CARD */}
+        <article className="ghs2-card ghs2-left" data-reveal>
+          <p className="ghs2-eyebrow">GREEN HABIT TRACKER</p>
 
-            <p className="bms-sub">
-              I designed a simple mobile app to help people eat better and stay
-              active. Users can log their meals in seconds, check how many
-              calories they’ve eaten, and see how much they still need to burn.
-              The app also lets you add your daily workouts to track your total
-              progress.
-            </p>
+          <h2 className="ghs2-title">
+            <span>Solution &</span>
+            <span>Approach</span>
+          </h2>
 
-            <p className="bms-sub">
-              The focus is on being fast and clear — big buttons, smooth flow,
-              and no clutter. Everything works offline too, so you can still
-              track your food and exercises without an internet connection. The
-              goal is to keep things easy: one screen, simple numbers, real
-              progress.
-            </p>
+          <p className="ghs2-desc">
+            I built a simple tracker that lets users log eco-friendly habits in
+            seconds. Habits are organised by category, and progress is shown
+            clearly so users can stay consistent over time.
+          </p>
+
+          <div className="ghs2-tags">
+            <span>Quick Logging</span>
+            <span>Categories</span>
+            <span>Progress</span>
+            <span>Expo</span>
+            <span>Express API</span>
+            <span>MySQL</span>
           </div>
-        </div>
+        </article>
 
-        {/* RIGHT: App Mockup / Visual */}
-        <figure className="bms-col-right" data-ani>
+        {/* RIGHT IMAGE CARD */}
+        <figure className="ghs2-card ghs2-right" data-reveal>
           <div
-            className="bms-img"
-            ref={imgRef}
-            style={{ backgroundImage: `url(${visual})` }}
+            className="ghs2-image"
+            style={{ backgroundImage: `url("${rightImage}")` }}
             role="img"
-            aria-label="App screens showing calorie tracking and workout summary"
+            aria-label="Green Habit Tracker screens and progress view"
           />
-          <figcaption className="bms-cap">
-            Screens: log meals → add exercises → see progress instantly.
+          <figcaption className="ghs2-cap">
+            Stack: React Native (Expo) → Node/Express API → MySQL database.
           </figcaption>
         </figure>
       </div>

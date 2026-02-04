@@ -5,8 +5,17 @@
   --accent:#f6a96c;
   --accent-2:#ffb574;
   --accent-dark:#8d3e10;
+
   --glass: rgba(255,255,255,.06);
   --stroke: rgba(255,255,255,.12);
+
+  /* ✅ ADD: text tokens used by your card styles */
+  --body-ink: #fff4e6;
+  --body-muted: rgba(255,244,230,.78);
+
+  /* ✅ ADD: dark glass for cards */
+  --card-glass: rgba(5, 8, 22, 0.90);
+  --card-stroke: rgba(255,255,255,0.14);
 }
 
 /* SECTION */
@@ -17,39 +26,6 @@
   overflow:hidden;
   color:var(--ink);
 }
-/* ===== DARK GLASS PANEL FOR REFLECTION CARDS ===== */
-.ref-card {
-  background: rgba(5, 8, 22, 0.92);          /* strong dark glass */
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 18px;
-  padding: clamp(18px, 2.4vw, 28px);
-  box-shadow:
-    0 20px 48px rgba(0, 0, 0, 0.58),
-    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-  color: var(--body-ink);
-  filter: none !important;
-}
-
-/* icons + title */
-.ref-card h3 {
-  margin: 0 0 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 900;
-  font-size: clamp(20px, 2.5vw, 28px);
-  color: var(--body-ink);
-}
-
-/* body text */
-.ref-card p {
-  margin: 0;
-  font-size: clamp(14px, 1.8vw, 19px);
-  line-height: 1.55;
-  color: var(--body-muted);
-}
 
 /* BACKGROUND */
 .rl-bg{
@@ -58,16 +34,28 @@
   background-size:cover;
   background-position:center;
   filter: brightness(.65) contrast(1.05) saturate(1.12);
+  z-index:-2;
+}
+
+/* ✅ NEW: subtle contrast veil (fixes the red/orange area readability) */
+.rl-veil{
+  position:absolute;
+  inset:0;
   z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(900px 520px at 20% 15%, rgba(0,0,0,.22), transparent 60%),
+    radial-gradient(900px 520px at 80% 25%, rgba(0,0,0,.22), transparent 62%),
+    linear-gradient(180deg, rgba(0,0,0,.20) 0%, rgba(0,0,0,.35) 55%, rgba(0,0,0,.52) 100%);
 }
 
 /* HEAD */
-.rl-head{ 
-  text-align:center; 
-  margin-bottom: clamp(20px,3vw,40px); 
+.rl-head{
+  text-align:center;
+  margin-bottom: clamp(20px,3vw,40px);
 }
 
-/* 🔶 Glass panel for eyebrow + title */
+/* Glass panel for eyebrow + title */
 .rl-head-glass{
   display:inline-block;
   padding: clamp(12px, 2vw, 18px) clamp(16px, 3vw, 26px);
@@ -109,6 +97,7 @@
   margin:0 0 18px;
 }
 @media (max-width:800px){ .rl-metrics{ grid-template-columns: repeat(2,1fr);} }
+
 .rl-metric{
   background:var(--glass);
   border:1px solid var(--stroke);
@@ -116,9 +105,27 @@
   padding:14px;
   text-align:center;
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
-.rl-metric-value{ display:block; font-weight:900; font-size:22px; }
-.rl-metric-label{ display:block; color:var(--muted); font-size:12px; }
+
+.rl-metric-value{
+  display:block;
+  font-weight:900;
+  font-size:22px;
+}
+
+.rl-metric-inline{
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+
+.rl-metric-label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+}
 
 /* GRID */
 .rl-grid{
@@ -135,26 +142,46 @@
   .rl-grid .rl-card.wide{ grid-column: 1 / -1; }
 }
 
+/* ✅ FIX: make cards darker so text is ALWAYS readable */
 .rl-card{
-  background:var(--glass);
-  border:1px solid var(--stroke);
+  background: var(--card-glass);
+  border: 1px solid var(--card-stroke);
   border-radius:16px;
   padding:20px;
-  backdrop-filter: blur(6px);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.58),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+
+  /* keep your nice glass feel but not too strong */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
   transition: background .35s ease, border-color .35s ease;
 }
-.rl-card:hover{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
-.rl-card-title{ margin:0 0 10px; font-size:16px; font-weight:800; }
+
+/* Keep hover effect, but still dark */
+.rl-card:hover{
+  background: rgba(5, 8, 22, 0.94);
+  border-color: rgba(255,255,255,0.20);
+}
+
+.rl-card-title{
+  margin:0 0 10px;
+  font-size:16px;
+  font-weight:800;
+  color: var(--body-ink);
+}
 
 /* Body copy */
 .rl-copy{
   margin: 0;
-  color: var(--ink);
+  color: var(--body-ink);
   opacity: .95;
   line-height: 1.65;
+  text-shadow: 0 1px 10px rgba(0,0,0,.25);
 }
 
-/* === DIRECTION-AWARE SLIDE ENGINE === */
+/* === DIRECTION-AWARE SLIDE ENGINE (UNCHANGED) === */
 .reveal{
   opacity: 0;
   transform:
